@@ -1,5 +1,7 @@
 import { useEffect } from "react"
-import EstimateProjectManagement from "../component/features/ProjectManagement"
+// import EstimateProjectManagement from "../component/features/ProjectManagement"
+import EstimateProjectManagement from "../component/features/ProjectManagement.js"
+
 const GanttChartPage = () => {
 
     // useEffect(() => {
