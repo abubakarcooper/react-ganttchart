@@ -38,7 +38,7 @@ const labelSettings = {
     rightLabel: 'TaskName'
 };
 
-const GanttPage = () => {
+const Gantt1Page = () => {
     const ganttInstance = useRef(null);
     const [isOpenStartDateModal, setStartDateModal] = useState(false);
     const [TasksData, setTaskData] = useState([]);
@@ -285,4 +285,4 @@ const GanttPage = () => {
     );
 };
 
-export default GanttPage;
+export default Gantt1Page;
