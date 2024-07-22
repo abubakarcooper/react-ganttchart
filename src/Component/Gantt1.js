@@ -4,17 +4,17 @@ import {
     GanttComponent, Inject, Selection, ColumnsDirective, ColumnDirective, Toolbar,
     Sort, Filter, Resize, ColumnMenu, PdfExport, DayMarkers, VirtualScroll, Edit
 } from '@syncfusion/ej2-react-gantt';
-import '../../index.css';
-import '../../css/gantt.css';
-import { generateTasks } from '../../utils/estimategatt';
+import '../index.css';
+import '../css/gantt.css';
+import { generateTasks } from '../utils/estimategatt';
 import { toast } from 'react-toastify';
-import { getApi } from '../../apis/estimatesheet';
-import Spinner from "../Spinner";
-import EstimateGanttQuickInfo from './QuickInfo';
+import { getApi } from '../apis/estimatesheet';
+import Spinner from "./Spinner";
+import EstimateGanttQuickInfo from './features/QuickInfo';
 import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
-import ProjectStartModal from './components/modals/ProjectStartModal';
-import { GanttTabs } from './components/general/Tabs';
+import ProjectStartModal from './features/components/modals/ProjectStartModal';
+import { GanttTabs } from './features/components/general/Tabs';
 
 const splitterSettings = {
     position: "40%"
@@ -38,7 +38,7 @@ const labelSettings = {
     rightLabel: 'TaskName'
 };
 
-const GanttChart = () => {
+const GanttPage = () => {
     const ganttInstance = useRef(null);
     const [isOpenStartDateModal, setStartDateModal] = useState(false);
     const [TasksData, setTaskData] = useState([]);
@@ -285,4 +285,4 @@ const GanttChart = () => {
     );
 };
 
-export default GanttChart;
+export default GanttPage;
