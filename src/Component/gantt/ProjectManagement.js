@@ -9,7 +9,7 @@ import '../../css/gantt.css';
 import { generateTasks } from '../../utils/estimategatt';
 import { toast } from 'react-toastify';
 import { getApi } from '../../apis/estimatesheet';
-import Spinner from ".././Spinner";
+import Spinner from "../Spinner";
 import EstimateGanttQuickInfo from './QuickInfo';
 import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
