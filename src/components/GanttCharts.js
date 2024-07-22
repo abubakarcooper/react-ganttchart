@@ -10,11 +10,9 @@ import { generateTasks } from '../utils/estimategatt';
 import { toast } from 'react-toastify';
 import { getApi } from '../apis/estimatesheet';
 import Spinner from "./Spinner";
-import EstimateGanttQuickInfo from './features/QuickInfo';
 import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
 import ProjectStartModal from './features/components/modals/ProjectStartModal';
-import { GanttTabs } from './features/components/general/Tabs';
 
 const splitterSettings = {
     position: "40%"
@@ -235,18 +233,7 @@ const Gantt1Page = () => {
     }
 
     return (
-        <div className='control-pane mt-2 bg-white-900'>
-            <GanttTabs />
-            <div>
-                <EstimateGanttQuickInfo
-                    estimateNumber={'estimateNumber'}
-                    estimateQuickInfoData={'estimateQuickInfoData'}
-                    estimateStartDate={'estimateStartDate'}
-                    setRegenerateTab={'setRegenerateTab'}
-                    totalCost={10}
-                    workingDays={1000}
-                />
-            </div>
+        <div className='control-pane mt-2 bg-white-3 h-[100vh]'>
             <div className='control-section mt-2'>
                 <GanttComponent id='Default' dataSource={TasksData} treeColumnIndex={1}
                     ref={ganttInstance}

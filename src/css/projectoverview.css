@@ -1,0 +1,42 @@
+.ganttTabs {
+  border-color: var(--color-primary-900);
+  gap: 6px;
+}
+.ganttTabs button {
+  --tw-ring-opacity: 0 !important;
+  --tw-ring-color: transparent !important;
+  box-shadow: none !important;
+  padding: 8px 10px;
+  position: relative;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+.ganttTabs button[aria-selected="true"] {
+  background-color: var(--color-white-500); /* Tailwind's blue-500 */
+  color: black; /* Tailwind's white */
+  border-color: transparent; /* Tailwind's border-transparent */
+  border: 2px solid var(--color-primary-900);
+  outline: none;
+  border-bottom: none; /* Remove border-bottom */
+}
+
+.ganttTabs button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px; /* Border height */
+  background-color: white; /* Border color for selected state */
+  z-index: -1; /* Place behind the button's text */
+}
+
+.ganttTabs button[aria-selected="false"] {
+  background-color: var(--color-gray-600) !important; /* Tailwind's gray-100 */
+  color: #1f2937; /* Tailwind's gray-800 */
+  border-color: #d1d5db; /* Tailwind's gray-300 */
+  border: 1px solid;
+  border-radius: 5px;
+  border-bottom: none;
+}

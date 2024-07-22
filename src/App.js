@@ -17,7 +17,7 @@ function App() {
   ]);
   // test
   return (
-    <div className="app">
+    <div className="app bg-[#fff]">
       <ToastContainer
         position="top-right"
         autoClose={4000}

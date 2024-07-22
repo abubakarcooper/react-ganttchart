@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Styled Tabs</title>
+    <style>
+      /* Parent container with red border-bottom */
+      .ganttTabs {
+        border-bottom: 2px solid red; /* Parent border color */
+        padding-bottom: 0;
+        position: relative;
+      }
+
+      /* Style for all buttons */
+      .ganttTabs button {
+        background-color: rgb(241, 245, 249); /* Light background */
+        color: black; /* Text color */
+        border: 1px solid; /* Border color */
+        border-bottom: 0; /* Remove border-bottom */
+        border-color: transparent; /* Make border transparent by default */
+        outline: none; /* Remove outline */
+        padding: 8px 16px; /* Padding */
+        cursor: pointer; /* Pointer cursor */
+        position: relative; /* Position relative for pseudo-element */
+      }
+
+      /* Style for the selected button */
+      .ganttTabs button[aria-selected="true"] {
+        border-color: transparent; /* Hide border color */
+        background-color: rgb(241, 245, 249); /* Background color */
+        color: black; /* Text color */
+        border-bottom: none; /* Remove border-bottom */
+        z-index: 1; /* Ensure it is above the parent */
+      }
+
+      /* Pseudo-element to show the border at the bottom of the selected button */
+      .ganttTabs button[aria-selected="true"]::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px; /* Border height */
+        background-color: white; /* Border color for selected state */
+        z-index: -1; /* Place behind the button's text */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ganttTabs">
+      <button aria-selected="false">Tab 1</button>
+      <button aria-selected="true">Tab 2</button>
+      <button aria-selected="false">Tab 3</button>
+    </div>
+  </body>
+</html>

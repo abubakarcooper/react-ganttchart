@@ -3,7 +3,7 @@ module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
     'node_modules/flowbite-react/lib/esm/**/*.js'
-  ],  theme: {
+  ], theme: {
     extend: {
       colors: {
         primary: {
@@ -32,6 +32,7 @@ module.exports = {
         white: {
           0: 'var(--color-white-900)',
           1: 'var(--color-white-800)',
+          2: 'var(--color-white-700)',
         },
         gray: {
           1: 'var(--color-gray-800)',
