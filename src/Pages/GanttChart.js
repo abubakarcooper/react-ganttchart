@@ -1,7 +1,6 @@
 import { useEffect } from "react"
+import GanttChart from "../component/features/Gantt"
 // import EstimateProjectManagement from "../component/features/ProjectManagement"
-import EstimateProjectManagement from "../component/features/ProjectManagement.js"
-
 const GanttChartPage = () => {
 
     // useEffect(() => {
@@ -30,7 +29,7 @@ const GanttChartPage = () => {
     // }, []);
 
     return <div className='gantt-chart'>
-        <EstimateProjectManagement />
+        <GanttChart />
     </div>
 }
 
