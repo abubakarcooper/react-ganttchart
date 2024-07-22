@@ -1,0 +1,84 @@
+@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-calendars/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-dropdowns/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-lists/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-layouts/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-grids/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-treegrid/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-react-gantt/styles/material.css";
+
+* {
+  box-sizing: border-box;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  --color-primary-900: #2a486b;
+  --color-primary-800: #30537d;
+  --color-primary-700: #0085bc;
+  --color-primary-600: #026087;
+  --color-primary-500: #026087ab;
+  --color-primary-400: #adccda;
+  --color-green-900: #ccdce3;
+  --color-green-800: #ccdce3;
+  --color-gray-700: #f4f3f1;
+
+  --color-orange-900: #dc7d39;
+
+  --color-white-900: #eef2f8;
+  --color-white-800: #dce6f2;
+
+  --color-black-900: #0a151d;
+  --color-black-800: #444444;
+
+  --color-gray-800: #7a7a7a;
+  --color-gray-700: #556066;
+
+  color: var(--color-black-900);
+  background-color: var(--color-white-900);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-style: normal;
+}
+
+.tooltipTask {
+  background-color: var(--color-primary-900);
+  color: var(--color-white-900);
+}
+
+.checkbox-label input[type="checkbox"] {
+  appearance: none; /* Remove default appearance */
+  -webkit-appearance: none; /* Remove default appearance for WebKit browsers */
+  -moz-appearance: none; /* Remove default appearance for Mozilla browsers */
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  margin-right: 8px;
+}
+
+input[type="checkbox"]:checked.customcheckbox {
+  background-color: var(--color-primary-900);
+}

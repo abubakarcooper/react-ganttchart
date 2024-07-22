@@ -1,0 +1,28 @@
+/** CSS STYLING OF THE GANTT CHART **/
+
+.select_custom_input > div {
+  border: 1px !important;
+  background-color: var(--color-white-900) !important;
+}
+
+.e-gantt .e-gantt-chart .e-gantt-parent-taskbar-inner-div,
+.e-gantt .e-gantt-chart .e-gantt-parent-progressbar-inner-div {
+  /* background: var(--color-primary-900); */
+  background: #adb5bd;
+  height: 16px;
+}
+
+.e-gantt .e-gantt-chart .e-gantt-child-taskbar-inner-div,
+.e-gantt .e-gantt-chart .e-gantt-child-progressbar-inner-div {
+  background: var(--color-primary-700);
+  height: 16px;
+}
+
+/* .e-gantt .e-gantt-chart .e-weekend-header-cell {
+  background-color: var(--color-orange-900);
+  color: var(--color-white-900);
+} */
+
+.gantt_estimate {
+  overflow-y: scroll !important;
+}

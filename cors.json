@@ -1,0 +1,13 @@
+[
+  {
+    "origin": [
+      "*",
+      "http://localhost:3000",
+      "https://creatorapp.zoho.com/cooperdevelopment/cooper-build/#Page:Project_Estimate?estimate_no=652",
+      "https://creatorapp.zoho.com/cooperdevelopment/cooper-build/#Page:ProjectEstimate22?estimate_no=651"
+    ],
+    "method": ["GET", "HEAD", "OPTIONS"],
+    "responseHeader": ["Content-Type", "Content-Length"],
+    "maxAgeSeconds": 3600
+  }
+]
