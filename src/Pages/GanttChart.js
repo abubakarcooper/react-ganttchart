@@ -1,7 +1,7 @@
-import GanttChart from "../component/Gantt1.js"
+import Gantt2 from "../component/Gantt2.js"
 const GanttChartPage = () => {
     return <div className='gantt-chart'>
-        <GanttChart />
+        <Gantt2 />
     </div>
 }
 
