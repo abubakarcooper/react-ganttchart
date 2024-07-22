@@ -3,6 +3,8 @@ import Error from "./Pages/Error";
 import PageFound from "./Pages/NoPageFound";
 import { ToastContainer } from "react-toastify";
 import GanttChartPage from "./Pages/GanttChart";
+import PageTest from "./Pages/page";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -10,7 +12,8 @@ function App() {
       path: "/",
       errorElement: <Error />,
       children: [
-        { path: "/", element: <GanttChartPage /> },
+        // { path: "/", element: <GanttChartPage /> },
+        { path: "/", element: <PageTest /> },
         { path: "*", element: <PageFound /> },
       ],
     },
