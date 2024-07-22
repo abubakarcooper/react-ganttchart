@@ -4,6 +4,7 @@ import ProjectOverview from "../components/ProjectOverview.js";
 import { Tabs } from "flowbite-react";
 import { FaChartSimple } from "react-icons/fa6";
 import { GiPieChart } from "react-icons/gi";
+import { BiSolidReport } from "react-icons/bi";
 import '../css/projectoverview.css'
 
 
@@ -25,6 +26,9 @@ const GanttChartPage = () => {
                 </Tabs.Item>
                 <Tabs.Item title="Gantt Charts" icon={GiPieChart} value="Gantt Charts">
                     {activeTab === 1 && <GanttCharts />}
+                </Tabs.Item>
+                <Tabs.Item title="Budget Report" icon={BiSolidReport} value="Budget Report">
+                    {/* {activeTab === 1 && <GanttCharts />} */}
                 </Tabs.Item>
             </Tabs>
         </div>
