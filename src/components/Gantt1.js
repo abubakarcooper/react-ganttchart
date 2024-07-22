@@ -237,7 +237,7 @@ const Gantt1Page = () => {
     return (
         <div className='control-pane mt-2 bg-white-900'>
             <GanttTabs />
-            {/* <div>
+            <div>
                 <EstimateGanttQuickInfo
                     estimateNumber={'estimateNumber'}
                     estimateQuickInfoData={'estimateQuickInfoData'}
@@ -280,7 +280,7 @@ const Gantt1Page = () => {
             </div>
             <div className='modals'>
                 <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} />
-            </div> */}
+            </div>
         </div>
     );
 };
