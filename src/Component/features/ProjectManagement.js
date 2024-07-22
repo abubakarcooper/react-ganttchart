@@ -14,6 +14,7 @@ import EstimateGanttQuickInfo from './QuickInfo';
 import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
 import ProjectStartModal from './components/modals/ProjectStartModal';
+import { GanttTabs } from './components/general/Tabs';
 
 const splitterSettings = {
     position: "40%"
@@ -234,8 +235,9 @@ const EstimateProjectManagement = () => {
     }
 
     return (
-        <div className='control-pane mt-2'>
-            <div>
+        <div className='control-pane mt-2 bg-white-900'>
+            <GanttTabs />
+            {/* <div>
                 <EstimateGanttQuickInfo
                     estimateNumber={'estimateNumber'}
                     estimateQuickInfoData={'estimateQuickInfoData'}
@@ -278,7 +280,7 @@ const EstimateProjectManagement = () => {
             </div>
             <div className='modals'>
                 <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} />
-            </div>
+            </div> */}
         </div>
     );
 };
