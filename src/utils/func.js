@@ -12,8 +12,6 @@ export const formatAmount = (amount) => {
   return integerPart + "." + decimalPart;
 };
 
-
-
 export const findMaxEndDate = (tasks) => {
   let maxDate = new Date(0);
 
@@ -38,7 +36,6 @@ export const findMaxEndDate = (tasks) => {
   });
   return maxDate
 }
-
 
 export function getInnerTextFromDiv(divHtml) {
   const tempContainer = document.createElement('div');

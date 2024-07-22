@@ -1,8 +1,5 @@
 import moment from 'moment'
 import { findMaxEndDate, formatAmount } from './func';
-
-
-
 const moveToNextMonday = (date) => {
     const day = date.getDay();
     if (day === 6) {
@@ -12,85 +9,6 @@ const moveToNextMonday = (date) => {
     }
     return date;
 };
-
-// const generateDeliverableClassTasks = (allTasks, initialDate) => {
-//     let previousObjectEndDate = new Date(initialDate);
-//     let previousSubtaskEndDate = new Date(previousObjectEndDate);
-
-//     allTasks.forEach((task) => {
-//         let taskMinStartDate = null;
-//         let taskMaxEndDate = null;
-//         let taskTotalDuration = 0;
-
-
-//         task.subtasks.forEach((subtask) => {
-//             let subtaskMinStartDate = null;
-//             let subtaskMaxEndDate = null;
-//             let subtaskTotalDuration = 0;
-//             let predecessor = ''
-
-//             subtask.subtasks.forEach((tt, nestedIndex) => {
-
-//                 let newEndDate = new Date(previousSubtaskEndDate);
-//                 tt.StartDate = new Date(previousSubtaskEndDate);
-
-//                 if (nestedIndex == 0) {
-//                     predecessor = tt.TaskID
-//                 } else {
-//                     tt.Predecessor = predecessor + 'FS';
-//                     predecessor = tt.TaskID
-//                 }
-
-//                 if (tt.days && +tt.days > 1) {
-//                     newEndDate.setDate(previousSubtaskEndDate.getDate() + (+tt.days - 1));
-//                 }
-//                 moveToNextMonday(newEndDate);
-//                 tt.EndDate = new Date(newEndDate);
-
-//                 tt.Duration = +tt.days || 1;
-//                 tt.MaterialCost = parseFloat(tt.mCost);
-//                 tt.LabourCost = parseFloat(tt.lCost);
-//                 tt.SubConCost = parseFloat(tt.subConTotal);
-
-//                 if (!subtaskMinStartDate || new Date(tt.StartDate) < new Date(subtaskMinStartDate)) {
-//                     subtaskMinStartDate = tt.StartDate;
-//                 }
-//                 if (!subtaskMaxEndDate || new Date(tt.EndDate) > new Date(subtaskMaxEndDate)) {
-//                     subtaskMaxEndDate = tt.EndDate;
-//                 }
-
-//                 previousSubtaskEndDate = new Date(tt.EndDate);
-//                 previousSubtaskEndDate.setDate(previousSubtaskEndDate.getDate() + 1);
-
-//                 subtaskTotalDuration += tt.Duration;
-//             });
-
-//             subtask.StartDate = subtaskMinStartDate;
-//             subtask.EndDate = subtaskMaxEndDate;
-//             subtask.Duration = subtaskTotalDuration;
-//             subtask.SubConCost = subtask.subtasks.reduce((acc, curr) => acc + (curr.SubConCost || 0), 0);
-//             subtask.MaterialCost = subtask.subtasks.reduce((acc, curr) => acc + (curr.MaterialCost || 0), 0);
-//             subtask.LabourCost = subtask.subtasks.reduce((acc, curr) => acc + (curr.LabourCost || 0), 0);
-
-//             if (!taskMinStartDate || new Date(subtask.StartDate) < new Date(taskMinStartDate)) {
-//                 taskMinStartDate = subtask.StartDate;
-//             }
-//             if (!taskMaxEndDate || new Date(subtask.EndDate) > new Date(taskMaxEndDate)) {
-//                 taskMaxEndDate = subtask.EndDate;
-//             }
-//             taskTotalDuration += subtaskTotalDuration;
-//         });
-
-//         task.SubConCost = formatAmount(task.subtasks.reduce((acc, curr) => acc + (curr.SubConCost || 0), 0));
-//         task.MaterialCost = formatAmount(task.subtasks.reduce((acc, curr) => acc + (curr.MaterialCost || 0), 0));
-//         task.LabourCost = formatAmount(task.subtasks.reduce((acc, curr) => acc + (curr.LabourCost || 0), 0));
-//         task.StartDate = taskMinStartDate;
-//         task.EndDate = taskMaxEndDate;
-//         task.Duration = taskTotalDuration;
-//     });
-//     return allTasks;
-// };
-
 
 const generateDeliverableClassTasks = (allTasks, initialDate) => {
     let previousObjectEndDate = new Date(initialDate);
