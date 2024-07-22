@@ -1,7 +1,8 @@
-import Gantt2 from "../component/Gantt2.js"
+// import Gantt2 from "../component/Gantt2.js"
 const GanttChartPage = () => {
     return <div className='gantt-chart'>
-        <Gantt2 />
+        <h1>Helloo </h1>
+        {/* <Gantt2 /> */}
     </div>
 }
 
