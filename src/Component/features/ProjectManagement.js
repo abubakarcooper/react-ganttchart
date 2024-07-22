@@ -13,7 +13,7 @@ import Spinner from "../Spinner";
 import EstimateGanttQuickInfo from './QuickInfo';
 import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
-import ProjectStartModal from './components/ProjectStartModal';
+import ProjectStartModal from './components/modals/ProjectStartModal';
 
 const splitterSettings = {
     position: "40%"

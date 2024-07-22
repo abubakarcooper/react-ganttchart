@@ -2,8 +2,8 @@ import { Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Spinner } from "flowbite-react";
-import { addRecord } from "../../../apis/estimatesheet";
-import ganttMessage from "../../../constant/ganttMessage";
+import { addRecord } from "../../../../apis/estimatesheet";
+import ganttMessage from "../../../../constant/ganttMessage";
 
 
 const ProjectStartModal = ({
