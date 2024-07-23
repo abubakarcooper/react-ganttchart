@@ -1,23 +1,31 @@
+
 export const taskStatuses = [
     {
         name: 'Completed',
-        colorCode: `#209DF8`
+        class: 'bg-completed'
     },
     {
         name: 'Paused',
-        colorCode: '#81D7A3'
-        // colorCode: '#81D7A3'
+        class: 'bg-Paused'
     },
     {
         name: 'Pending',
-        // colorCode: `#F13D5A`
-        colorCode: `#209DF8`
+        class: `bg-Pending`
 
     },
     {
         name: 'Processing',
-        // colorCode: `#434656`
-        colorCode: `#209DF8`
-
+        class: `bg-Processing `
     },
 ]
+
+export const taskColumns = [
+    { id: 'taskName', label: 'Task name' },
+    { id: 'startDate', label: 'Start Date' },
+    { id: 'endDate', label: 'End Date' },
+    { id: 'actualStart', label: 'Actual Start' },
+    { id: 'actualEnd', label: 'Actual End' },
+    { id: 'amount', label: 'Amount' },
+    { id: 'completion', label: '%age Completion' },
+    { id: 'action', label: 'Action' }
+];

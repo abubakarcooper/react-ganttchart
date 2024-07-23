@@ -85,3 +85,19 @@ body {
 input[type="checkbox"]:checked.customcheckbox {
   background-color: var(--color-primary-900);
 }
+
+.bg-completed {
+  background: #81d7a3;
+}
+
+.bg-Paused {
+  background: #209df8;
+}
+
+.bg-Pending {
+  background: #f13d5a;
+}
+
+.bg-Processing {
+  background: #434656;
+}
