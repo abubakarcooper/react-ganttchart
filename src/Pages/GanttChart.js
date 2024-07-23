@@ -11,7 +11,7 @@ import '../css/projectoverview.css'
 const GanttChartPage = () => {
     const [activeTab, setActiveTab] = useState(0);
     return (
-        <div className='gantt-chart  bg-white-2 h-[100vh] m-1.5	p-2.5'>
+        <div className='gantt-chart  bg-white-2 m-1.5	p-2.5'>
             <Tabs
                 aria-label="Tabs with underline"
                 variant="underline"

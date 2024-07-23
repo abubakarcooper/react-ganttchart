@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Spinner from './Spinner';
-import { taskStatuses } from '../constant/data';
 import OverviewCard from './features/components/projectOverview/Overview1.js';
 import TaskPerformance from './features/components/projectOverview/Taskperformance.js';
+import ProjectTaskTable from './features/components/projectOverview/ProjectTask.js';
 
 const ProjectOverview = () => {
     const [isGanttLoading, setLoading] = useState(false)
@@ -16,7 +16,7 @@ const ProjectOverview = () => {
     }
 
     return (
-        <div className='control-pane mt-2 bg-white-3 h-[100vh]'>
+        <div className='control-pane mt-2 bg-white-3'>
             <div className='flex gap-5'>
                 <div className='w-[30%]'>
                     <OverviewCard />
@@ -24,6 +24,10 @@ const ProjectOverview = () => {
                 <div className='w-[70%]'>
                     <TaskPerformance />
                 </div>
+            </div>
+
+            <div className=''>
+                <ProjectTaskTable />
             </div>
         </div>
     );
