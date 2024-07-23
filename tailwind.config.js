@@ -30,8 +30,10 @@ module.exports = {
           1: 'var(--color-black-800)',
         },
         white: {
+          
           0: 'var(--color-white-900)',
           1: 'var(--color-white-800)',
+          2: 'var(--color-white-100)',
         },
         gray: {
           1: 'var(--color-gray-800)',

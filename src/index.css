@@ -40,6 +40,7 @@
 
   --color-white-900: #eef2f8;
   --color-white-800: #dce6f2;
+  --color-white-100: #ffffff;
 
   --color-black-900: #0a151d;
   --color-black-800: #444444;
@@ -81,4 +82,26 @@ body {
 
 input[type="checkbox"]:checked.customcheckbox {
   background-color: var(--color-primary-900);
+}
+
+
+
+
+
+
+.barCompleted1 {
+  background-color: #479960;
+  border-radius: 10px;
+  width: 100%;
+  height: 7px;
+}
+.barCompleted2 {
+  background-color: rgb(63, 165, 233);
+  border-radius: 10px;
+  width: 80%;
+  height: 7px;
+}
+
+.label {
+  display: none;
 }
