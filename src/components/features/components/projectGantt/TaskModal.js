@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Modal, ModalBody } from "flowbite-react";
-import TaskViewDetails from "./TaskViewDetails";
-import TaskEditDetails from "./TaskEditDetails";
+import TaskViewDetails from "./basic/TaskViewDetails";
+import TaskEditDetails from "./basic/TaskEditDetails";
 import { Tabs } from "flowbite-react";
-import BudgetAnalysis from "./BudgetAnalysis";
+import BudgetAnalysis from "./basic/BudgetAnalysis";
+
 
 const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);

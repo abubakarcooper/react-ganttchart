@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Upload from '../../../../images/Featured.svg'
-import tick from '../../../../images/tick.png'
-import del from '../../../../images/delete.png'
-import img1 from '../../../../images/img1.png'
-import img2 from '../../../../images/img2.png'
-import img3 from '../../../../images/img3.png'
-import img4 from '../../../../images/img4.png'
+import Upload from '../../../../../images/Featured.svg'
+import tick from '../../../../../images/tick.png'
+import del from '../../../../../images/delete.png'
+import img1 from '../../../../../images/img1.png'
+import img2 from '../../../../../images/img2.png'
+import img3 from '../../../../../images/img3.png'
+import img4 from '../../../../../images/img4.png'
 import ProgressBar from "@ramonak/react-progress-bar";
 
 const TaskDetails = () => {
@@ -154,7 +154,6 @@ const StatusRadioButtons = ({ selectedStatus, onChange }) => {
         </div>
     );
 };
-
 
 const TaskEditForm = () => {
     const [selectedStatus, setSelectedStatus] = useState("Completed");
@@ -308,7 +307,7 @@ const TaskEditForm = () => {
                                 </div>
                             </div>
                             <div className='flex justify-end mr-5'>
-                                <button className='bg-primary-0 py-2 px-14 rounded-lg text-white-0 my-4 text-base w-[152px]'>Done</button>
+                                <button className='bg-primary-0 py-2 px-14  text-white-0 my-4 text-base w-[152px] rounded-md'>Done</button>
                             </div>
                         </div>
 
@@ -331,11 +330,11 @@ const TaskEditDetails = ({ setIsEditOpen, isEditOpen }) => {
                     <div className="flex justify-end gap-2 mt-4">
                         <button
                             onClick={() => setIsEditOpen(!isEditOpen)}
-                            className="px-8 sm:px-14 py-2 text-sm font-semibold text-primary-0 bg-gray-100 rounded-md border border-primary-0 w-[152px]">
+                            className="px-8 sm:px-14 py-2 text-sm font-semibold text-primary-0 bg-gray-100 rounded-lg border border-primary-0 w-[152px]">
                             Cancel
                         </button>
                         <button
-                            className="px-8 sm:px-14 py-2 text-sm font-semibold text-white-2 bg-primary-0 rounded-md w-[152px]">
+                            className="px-8 sm:px-14 py-2 text-sm font-semibold text-white-2 bg-primary-0 rounded-lg w-[152px]">
                             Save
                         </button>
                     </div>

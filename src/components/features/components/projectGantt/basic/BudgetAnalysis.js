@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Dollar from '../../../../images/Dollar-icon.svg';
+import Dollar from '../../../../../images/Dollar-icon.svg';
 
 const BudgetAnalysis = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

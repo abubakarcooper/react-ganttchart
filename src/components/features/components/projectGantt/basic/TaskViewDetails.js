@@ -1,7 +1,7 @@
 import React from "react";
-import Img1 from "../../../../images/img1.png";
-import Add from "../../../../images/Add.png";
-import Cross from "../../../../images/cross.png";
+import Img1 from "../../../../../images/img1.png";
+import Add from "../../../../../images/Add.png";
+import Cross from "../../../../../images/cross.png";
 
 const TaskViewDetails = ({ handleTaskModelOpen, setIsEditOpen }) => {
     return (
