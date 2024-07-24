@@ -13,10 +13,7 @@ export default function EstimateGanttQuickInfo() {
                     </a>
                 </div>
                 <div className="flex text-primary-0">
-                    {/* <h2 className="text-xl font-semibold">0654</h2> */}
                     <h2 className="text-xl font-semibold leading-tight mt-[8px] ml-2">112 South 2nd Street Brooklyn</h2>
-                    {/* <h2 className="text-xl font-semibold ml-2">$10,000.00</h2>
-                    <h2 className="text-xl font-semibold ml-2">30 Days</h2> */}
                 </div>
             </div>
 

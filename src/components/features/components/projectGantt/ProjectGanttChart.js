@@ -10,12 +10,10 @@ import { generateTasks } from '../../../../utils/estimategatt';
 import { toast } from 'react-toastify';
 import { getApi } from '../../../../apis/estimatesheet';
 import Spinner from "../../../Spinner";
-import EstimateGanttQuickInfo from '../../QuickInfo';
-import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
 import ProjectStartModal from '../modals/ProjectStartModal';
 import { RiBriefcase2Line } from "react-icons/ri";
-import ProjectModal from './ProjectModal';
+import TaskModal from './TaskModal';
 
 const splitterSettings = {
     position: "40%"
@@ -43,9 +41,6 @@ const ProjectGanttChartView = () => {
     const ganttInstance = useRef(null);
     const [isTaskModalOpen, setTaskModalOpen] = useState(false);
     const [isOpenStartDateModal, setStartDateModal] = useState(false);
-
-
-
     const [TasksData, setTaskData] = useState([]);
     const [isGanttLoading, setGanttLoading] = useState(true);
     let originalColumnSettings = [];
@@ -305,7 +300,7 @@ const ProjectGanttChartView = () => {
             </div>
             <div className='modals'>
                 <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} />
-                <ProjectModal isTaskModalOpen={isTaskModalOpen} handleTaskModelOpen={handleTaskModelOpen} />
+                <TaskModal isTaskModalOpen={isTaskModalOpen} handleTaskModelOpen={handleTaskModelOpen} />
             </div>
         </div>
     );

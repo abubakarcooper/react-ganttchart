@@ -25,7 +25,6 @@ const ProjectOverview = () => {
                     <TaskPerformance />
                 </div>
             </div>
-
             <div className=''>
                 <ProjectTaskTable />
             </div>

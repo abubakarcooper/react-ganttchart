@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import Upload from "../images/Featured.svg";
-import Img1 from "../images/img1.png";
-import Add from "../images/Add.png";
-import Cross from "../images/cross.png";
+import React from "react";
+import Img1 from "../../../../images/img1.png";
+import Add from "../../../../images/Add.png";
+import Cross from "../../../../images/cross.png";
 
-const TaskViewDetails = ({ handleTaskModelOpen, isTaskModal, setIsEditOpen }) => {
+const TaskViewDetails = ({ handleTaskModelOpen, setIsEditOpen }) => {
     return (
         <>
             <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 ">
