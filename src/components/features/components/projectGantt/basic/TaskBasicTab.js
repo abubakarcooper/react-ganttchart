@@ -14,7 +14,7 @@ const TaskBasicTab = ({ isTaskModalOpen, handleTaskModelOpen }) => {
             aria-label="Tabs with underline"
             variant="underline"
             onActiveTabChange={(tab) => setActiveTab(tab)}
-            className='ganttTabs taskTabs'
+            className='ganttTabs'
         >
             <Tabs.Item active title="Task Insights information" value="Task Insights information" className=''>
                 {

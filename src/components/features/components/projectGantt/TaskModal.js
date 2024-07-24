@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal, ModalBody } from "flowbite-react";
-import TaskViewDetails from "./basic/TaskViewDetails";
-import TaskEditDetails from "./basic/TaskEditDetails";
 import { Tabs } from "flowbite-react";
-import BudgetAnalysis from "./basic/BudgetAnalysis";
 import TaskBasicTab from "./basic/TaskBasicTab";
 
 
 
 const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState(0);
 
     useEffect(() => {
         setIsModalOpen(isTaskModalOpen)
@@ -28,7 +26,23 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                 <div className="rounded-lg" style={{ backgroundColor: "white", overflowY: 'scroll' }}>
                     <Modal.Header className="border-none pb-0" />
                     <ModalBody>
-                        <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
+                        <div>
+                            <Tabs variant="underline" className="tasktabs gap-2">
+                                <Tabs.Item active title="Basic" className="min-w-20	">
+                                    <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
+                                </Tabs.Item>
+                                <Tabs.Item title="Available Resources" >
+                                    <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
+                                </Tabs.Item>
+                                {/* 
+                            <Tabs.Item title="Task Assignment" >
+                            </Tabs.Item>
+                            <Tabs.Item title="Material Allocation" >
+                            </Tabs.Item>
+                            <Tabs.Item title="Documents" >
+                            </Tabs.Item> */}
+                            </Tabs>
+                        </div>
                         {/* <Tabs
                             aria-label="Tabs with underline"
                             variant="underline"

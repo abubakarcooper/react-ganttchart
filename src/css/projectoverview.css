@@ -2,7 +2,8 @@
   border-color: var(--color-primary-900);
   gap: 6px;
 }
-.ganttTabs button {
+.ganttTabs button,
+.tasktabs button {
   --tw-ring-opacity: 0 !important;
   --tw-ring-color: transparent !important;
   box-shadow: none !important;
@@ -10,6 +11,23 @@
   position: relative;
   font-size: 14px;
   border-radius: 2px;
+}
+
+.tasktabs {
+}
+
+.tasktabs button {
+  min-width: 80px;
+  background: transparent;
+  color: var(--color-primary-900);
+  font-size: 15px;
+  color: var(--color-gray-500);
+}
+
+.tasktabs button[aria-selected="true"] {
+  border-bottom: 2px solid var(--color-primary-900);
+  font-weight: 700;
+  color: var(--color-primary-900);
 }
 
 .ganttTabs button[aria-selected="true"] {
