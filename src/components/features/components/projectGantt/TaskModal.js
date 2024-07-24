@@ -10,8 +10,6 @@ import TaskBasicTab from "./basic/TaskBasicTab";
 
 const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState(0);
 
     useEffect(() => {
         setIsModalOpen(isTaskModalOpen)
@@ -25,7 +23,6 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                 size={"6xl"}
                 onClose={() => {
                     handleTaskModelOpen()
-                    setIsEditOpen(false)
                 }}
             >
                 <div className="rounded-lg" style={{ backgroundColor: "white", overflowY: 'scroll' }}>
