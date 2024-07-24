@@ -46,6 +46,11 @@
   border-bottom: none;
 }
 
+.taskTabs button[aria-selected="false"] {
+  border-color: #dbdbdb;
+  color: gray;
+}
+
 .ganttTabs button[aria-selected="false"] svg {
   color: var(--color-gray-500);
 }

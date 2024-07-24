@@ -7,7 +7,7 @@ import ganttMessage from "../../../../constant/ganttMessage";
 
 
 const ProjectStartModal = ({
-    singleStartDateModalOpen,
+     singleStartDateModalOpen,
     onSingleStartDateeModalClose,
     date,
     deliverableId,

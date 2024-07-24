@@ -15,6 +15,7 @@ import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
 import ProjectStartModal from '../modals/ProjectStartModal';
 import { RiBriefcase2Line } from "react-icons/ri";
+import ProjectModal from './ProjectModal';
 
 const splitterSettings = {
     position: "40%"
@@ -40,7 +41,11 @@ const labelSettings = {
 
 const ProjectGanttChartView = () => {
     const ganttInstance = useRef(null);
+    const [isTaskModalOpen, setTaskModalOpen] = useState(false);
     const [isOpenStartDateModal, setStartDateModal] = useState(false);
+
+
+
     const [TasksData, setTaskData] = useState([]);
     const [isGanttLoading, setGanttLoading] = useState(true);
     let originalColumnSettings = [];
@@ -95,7 +100,6 @@ const ProjectGanttChartView = () => {
         // Function to handle button clicks
         const handleClick = (event) => {
             // Remove 'hello' class from all buttons
-            console.log(event, 'event')
             const toolbarItems = document.querySelectorAll('.e-toolbar-items .e-tbar-btn');
             toolbarItems.forEach(btn => btn.classList.remove('active-primary'));
             event.currentTarget.classList.add('active-primary');
@@ -104,7 +108,6 @@ const ProjectGanttChartView = () => {
         // Attach click event listeners to all buttons
         const toolbarButtons = document.querySelectorAll('.e-toolbar-items .e-tbar-btn');
         toolbarButtons.forEach(button => {
-            console.log(button, 'button')
             button.addEventListener('click', handleClick);
         });
 
@@ -155,7 +158,7 @@ const ProjectGanttChartView = () => {
 
     const taskbarTemplate = (props) => (
         <div
-            className="e-gantt-child-taskbar-inner-div e-gantt-child-taskbar"
+            className="e-gantt-child-taskbar-inner-div e-gantt-child-taskbar cursor-pointer"
             style={{ height: '100%' }}
         >
             <div
@@ -241,16 +244,23 @@ const ProjectGanttChartView = () => {
     }
 
     const handleTaskbarClick = (args) => {
-        console.log(args, 'args')
+        // setTaskModalOpen(true)
     };
 
     const handleRowSelected = (args) => {
         const { data, } = args
         if (data.level == 2) {
-            alert('Hello')
+            setTaskModalOpen(true)
             console.log(data);
+            // alert('Helloo')
         }
     };
+
+    const handleTaskModelOpen = () => {
+        setTaskModalOpen(!isTaskModalOpen)
+    }
+
+    console.log(isTaskModalOpen, 'isTaskModalOpen')
 
     if (isGanttLoading) {
         return (
@@ -295,6 +305,7 @@ const ProjectGanttChartView = () => {
             </div>
             <div className='modals'>
                 <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} />
+                <ProjectModal isTaskModalOpen={isTaskModalOpen} handleTaskModelOpen={handleTaskModelOpen} />
             </div>
         </div>
     );
