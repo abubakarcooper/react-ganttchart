@@ -80,6 +80,9 @@ const ProjectGanttChartView = () => {
             const exportToPDFElement = document.querySelector('.e-toolbar-item .pdf-icon');
 
             if (projectStartDateElement) {
+                if (projectStartDateElement && projectStartDateElement.parentElement) {
+                    projectStartDateElement.parentElement.classList.add('your-new-class');
+                }
                 ReactDOM.render(<RiBriefcase2Line className='text-sm mb-[0px] text-primary-900' />, projectStartDateElement);
             }
             if (exportToPDFElement) {
@@ -87,7 +90,31 @@ const ProjectGanttChartView = () => {
             }
         }
     });
-    // }, [ganttInstance.current]);
+
+    useEffect(() => {
+        // Function to handle button clicks
+        const handleClick = (event) => {
+            // Remove 'hello' class from all buttons
+            console.log(event, 'event')
+            const toolbarItems = document.querySelectorAll('.e-toolbar-items .e-tbar-btn');
+            toolbarItems.forEach(btn => btn.classList.remove('active-primary'));
+            event.currentTarget.classList.add('active-primary');
+        };
+
+        // Attach click event listeners to all buttons
+        const toolbarButtons = document.querySelectorAll('.e-toolbar-items .e-tbar-btn');
+        toolbarButtons.forEach(button => {
+            console.log(button, 'button')
+            button.addEventListener('click', handleClick);
+        });
+
+        // Cleanup event listeners on component unmount
+        return () => {
+            toolbarButtons.forEach(button => {
+                button.removeEventListener('click', handleClick);
+            });
+        };
+    });
 
 
     const getEstimateDetailViewReport = async () => {
@@ -145,7 +172,6 @@ const ProjectGanttChartView = () => {
         // return <ProjectStartModal />
     }
     const toolbarClick = async (args) => {
-        console.log(args, 'arges')
         if (args.item.text === 'PDF export') {
             saveCurrentLayout();
             adjustLayoutForExport();

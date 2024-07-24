@@ -61,11 +61,13 @@
   border-radius: 2px;
 }
 
-.e-toolbar .e-toolbar-item .e-tbar-btn:hover .e-tbar-btn-text {
+.e-toolbar .e-toolbar-item .e-tbar-btn:hover .e-tbar-btn-text,
+.e-toolbar .e-toolbar-item .active-primary .e-tbar-btn-text {
   color: var(--color-white-500) !important;
 }
 
-.e-toolbar .e-toolbar-item .e-tbar-btn:hover svg {
+.e-toolbar .e-toolbar-item .e-tbar-btn:hover svg,
+.e-toolbar .e-toolbar-item .active-primary:hover svg {
   color: var(--color-white-500) !important;
 }
 
@@ -87,4 +89,25 @@
 .e-gantt .e-expandall::before,
 .e-gantt .e-collapseall::before {
   color: var(--color-primary-900);
+}
+
+.e-toolbar .e-toolbar-item .active-primary {
+  background: var(--color-primary-900) !important;
+}
+
+.e-toolbar .e-toolbar-items .active-primary svg {
+  color: var(--color-white-500);
+}
+
+.e-toolbar .e-toolbar-items .active-primary svg {
+  background: var(--color-primary-900) !important;
+}
+
+/* .e-toolbar .e-toolbar-item .e-tbar-btn {
+
+} */
+
+.e-gantt .active-primary .e-expandall::before,
+.e-gantt .active-primary .e-collapseall::before {
+  color: var(--color-white-500);
 }
