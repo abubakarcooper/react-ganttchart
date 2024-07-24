@@ -4,6 +4,8 @@ import TaskViewDetails from "./basic/TaskViewDetails";
 import TaskEditDetails from "./basic/TaskEditDetails";
 import { Tabs } from "flowbite-react";
 import BudgetAnalysis from "./basic/BudgetAnalysis";
+import TaskBasicTab from "./basic/TaskBasicTab";
+
 
 
 const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) => {
@@ -14,6 +16,7 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
     useEffect(() => {
         setIsModalOpen(isTaskModalOpen)
     }, [isTaskModalOpen])
+
 
     return (
         <>
@@ -28,7 +31,8 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                 <div className="rounded-lg" style={{ backgroundColor: "white", overflowY: 'scroll' }}>
                     <Modal.Header className="border-none pb-0" />
                     <ModalBody>
-                        <Tabs
+                        <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
+                        {/* <Tabs
                             aria-label="Tabs with underline"
                             variant="underline"
                             onActiveTabChange={(tab) => setActiveTab(tab)}
@@ -53,7 +57,7 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                             <Tabs.Item title="Budget Analysis" value="Budget Analysis">
                                 {activeTab === 1 && <BudgetAnalysis />}
                             </Tabs.Item>
-                        </Tabs>
+                        </Tabs> */}
                     </ModalBody>
                 </div>
             </Modal>
