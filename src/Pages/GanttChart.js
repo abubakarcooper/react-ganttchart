@@ -6,10 +6,22 @@ import { FaChartSimple } from "react-icons/fa6";
 import { GiPieChart } from "react-icons/gi";
 import { BiSolidReport } from "react-icons/bi";
 import '../css/projectoverview.css'
+import Spinner from '../components/Spinner.js';
 
 
 const GanttChartPage = () => {
+
+    const [isGanttLoading, setLoading] = useState(true)
     const [activeTab, setActiveTab] = useState(0);
+
+    // if (isGanttLoading) {
+    //     return (
+    //         <div className="flex justify-center items-center">
+    //             <Spinner />
+    //         </div>
+    //     );
+    // }
+
     return (
         <div className='gantt-chart  bg-white-2 m-1.5	p-2.5'>
             <Tabs

@@ -4,16 +4,17 @@ import {
     GanttComponent, Inject, Selection, ColumnsDirective, ColumnDirective, Toolbar,
     Sort, Filter, Resize, ColumnMenu, PdfExport, DayMarkers, VirtualScroll, Edit
 } from '@syncfusion/ej2-react-gantt';
-import '../../index.css';
-import '../../css/gantt.css';
-import { generateTasks } from '../../utils/estimategatt';
+import '../../../../index.css';
+import '../../../../css/gantt.css';
+import { generateTasks } from '../../../../utils/estimategatt';
 import { toast } from 'react-toastify';
-import { getApi } from '../../apis/estimatesheet';
-import Spinner from "../Spinner";
-import EstimateGanttQuickInfo from './QuickInfo';
+import { getApi } from '../../../../apis/estimatesheet';
+import Spinner from "../../../Spinner";
+import EstimateGanttQuickInfo from '../../QuickInfo';
 import { GrProjects } from "react-icons/gr";
 import { BiSolidFilePdf } from "react-icons/bi";
-import ProjectStartModal from './components/modals/ProjectStartModal';
+import ProjectStartModal from '../modals/ProjectStartModal';
+import { RiBriefcase2Line } from "react-icons/ri";
 
 const splitterSettings = {
     position: "40%"
@@ -37,7 +38,7 @@ const labelSettings = {
     rightLabel: 'TaskName'
 };
 
-const EstimateProjectManagement = () => {
+const ProjectGanttChartView = () => {
     const ganttInstance = useRef(null);
     const [isOpenStartDateModal, setStartDateModal] = useState(false);
     const [TasksData, setTaskData] = useState([]);
@@ -48,7 +49,7 @@ const EstimateProjectManagement = () => {
             text: 'Project Start Date',
             tooltipText: 'Project Start Date',
             click: () => setStartDateModal(!isOpenStartDateModal),
-            id: 'Test1',
+            id: 'ProjectStartDate',
             prefixIcon: 'project-icon relative -right-[5px] text-sm'
         },
         {
@@ -79,7 +80,7 @@ const EstimateProjectManagement = () => {
             const exportToPDFElement = document.querySelector('.e-toolbar-item .pdf-icon');
 
             if (projectStartDateElement) {
-                ReactDOM.render(<GrProjects className='text-sm mb-[0px]' />, projectStartDateElement);
+                ReactDOM.render(<RiBriefcase2Line className='text-sm mb-[0px] text-primary-900' />, projectStartDateElement);
             }
             if (exportToPDFElement) {
                 ReactDOM.render(<BiSolidFilePdf className='text-lg mb-[3px]' />, exportToPDFElement);
@@ -235,16 +236,6 @@ const EstimateProjectManagement = () => {
 
     return (
         <div className='control-pane mt-2 bg-white-900'>
-            <div>
-                <EstimateGanttQuickInfo
-                    estimateNumber={'estimateNumber'}
-                    estimateQuickInfoData={'estimateQuickInfoData'}
-                    estimateStartDate={'estimateStartDate'}
-                    setRegenerateTab={'setRegenerateTab'}
-                    totalCost={10}
-                    workingDays={1000}
-                />
-            </div>
             <div className='control-section mt-2'>
                 <GanttComponent id='Default' dataSource={TasksData} treeColumnIndex={1}
                     ref={ganttInstance}
@@ -283,4 +274,4 @@ const EstimateProjectManagement = () => {
     );
 };
 
-export default EstimateProjectManagement;
+export default ProjectGanttChartView;
