@@ -3,7 +3,7 @@
   gap: 6px;
 }
 .ganttTabs button,
-.tasktabs button {
+.tasktabs > button {
   --tw-ring-opacity: 0 !important;
   --tw-ring-color: transparent !important;
   box-shadow: none !important;
@@ -14,9 +14,10 @@
 }
 
 .tasktabs {
+  /* background-color: #ccdce3; */
 }
 
-.tasktabs button {
+.tasktabs > button {
   min-width: 80px;
   background: transparent;
   color: var(--color-primary-900);
