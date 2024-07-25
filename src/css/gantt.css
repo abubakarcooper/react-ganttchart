@@ -111,3 +111,8 @@
 .e-gantt .active-primary .e-collapseall::before {
   color: var(--color-white-500);
 }
+
+.submital .css-1xc3v61-indicatorContainer svg {
+  color: var(--color-primary-900);
+  font-weight: 700;
+}

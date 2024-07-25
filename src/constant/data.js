@@ -29,3 +29,39 @@ export const taskColumns = [
     { id: 'completion', label: '%age Completion' },
     { id: 'action', label: 'Action' }
 ];
+
+export const documentsColumn =
+    [
+        {
+            "label": "Submitted Name",
+            "id": "submitted-name"
+        },
+        {
+            "label": "Submitted Type",
+            "id": "submitted-type"
+        },
+        {
+            "label": "Status",
+            "id": "status"
+        },
+        {
+            "label": "Trade Code",
+            "id": "trade-code"
+        },
+        {
+            "label": "Latest Date",
+            "id": "latest-date"
+        },
+        {
+            "label": "Latest Revision",
+            "id": "latest-revision"
+        },
+        {
+            "label": "Documents",
+            "id": "documents"
+        },
+        {
+            "label": "Action",
+            "id": "action"
+        }
+    ]

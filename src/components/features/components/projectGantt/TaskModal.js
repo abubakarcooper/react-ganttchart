@@ -18,13 +18,14 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
             <Modal
                 show={isModalOpen}
                 size={"6xl"}
+                className="min-h-[600px]"
                 onClose={() => {
                     handleTaskModelOpen()
                 }}
             >
-                <div className="rounded-lg" style={{ backgroundColor: "white", overflowY: 'scroll' }}>
+                <div className="rounded-lg hello" style={{ backgroundColor: "white", overflowY: 'scroll' }}>
                     <Modal.Header className="border-none pb-0" />
-                    <ModalBody>
+                    <ModalBody className="p-5 pt-2">
                         <div>
                             <Tabs variant="underline" className="tasktabs gap-2">
                                 <Tabs.Item active title="Basic" className="min-w-20	">
