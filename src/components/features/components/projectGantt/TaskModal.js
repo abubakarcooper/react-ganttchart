@@ -28,7 +28,7 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                 <div className="rounded-lg" style={{ backgroundColor: "white", overflowY: 'scroll' }}>
                     <Modal.Header className="border-none pb-0" />
                     <ModalBody>
-                        <div>
+                        <div className="">
                             <Tabs variant="underline" className="tasktabs gap-2">
                                 <Tabs.Item active title="Basic" className="min-w-20	">
                                     <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
@@ -36,15 +36,15 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                                 <Tabs.Item title="Available Resources" >
                                     <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
                                 </Tabs.Item>
-                            
-                            
-                            <Tabs.Item title="Task Assignment" >
-                            </Tabs.Item>
-                            <Tabs.Item title="Material Allocation" >
-                            </Tabs.Item>
-                            <Tabs.Item title="Documents" >
-                            <Table/>
-                            </Tabs.Item> 
+
+
+                                <Tabs.Item title="Task Assignment" >
+                                </Tabs.Item>
+                                <Tabs.Item title="Material Allocation" >
+                                </Tabs.Item>
+                                <Tabs.Item title="Documents" >
+                                    <Table />
+                                </Tabs.Item>
                             </Tabs>
                         </div>
                         {/* <Tabs

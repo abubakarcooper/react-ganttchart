@@ -2,6 +2,7 @@ import { useState } from 'react';
 import bin from '../../../../../images/redDelete.svg';
 import edit from '../../../../../images/edit.png';
 import docs from '../../../../../images/docs.svg';
+import FileUploader from './FileUploader';
 
 const tasks = [
     {
@@ -212,6 +213,7 @@ const Table = () => {
                     </div>
                 </div>
             )}
+           < FileUploader/>
         </div>
     );
 };
