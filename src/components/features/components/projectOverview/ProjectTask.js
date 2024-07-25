@@ -54,7 +54,7 @@ const TasksTable = ({ tasks }) => {
 
     return (
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead className="text-sm text-gray-700 uppercase bg-gray-50 capitalize">
+            <thead className="text-sm text-gray-700 uppercase bg-gray-50">
                 <tr className="">
                     {taskColumns.map((column) => (
                         <th

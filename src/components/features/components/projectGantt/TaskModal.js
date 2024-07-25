@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Modal, ModalBody } from "flowbite-react";
 import { Tabs } from "flowbite-react";
 import TaskBasicTab from "./basic/TaskBasicTab";
-
-
+import TaskDocumentTab2 from './documents/TaskDocumentTab2'
+import NoDataImg from '../../../../images/noData.png'
 
 const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +12,6 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
     useEffect(() => {
         setIsModalOpen(isTaskModalOpen)
     }, [isTaskModalOpen])
-
 
     return (
         <>
@@ -32,43 +31,29 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                                     <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
                                 </Tabs.Item>
                                 <Tabs.Item title="Available Resources" >
-                                    <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
+                                    <div className="flex justify-center">
+                                        <img src={NoDataImg} alt="image" />
+                                    </div>
+                                    {/* <NoDataImg /> */}
                                 </Tabs.Item>
-                                {/* 
-                            <Tabs.Item title="Task Assignment" >
-                            </Tabs.Item>
-                            <Tabs.Item title="Material Allocation" >
-                            </Tabs.Item>
-                            <Tabs.Item title="Documents" >
-                            </Tabs.Item> */}
+
+                                <Tabs.Item title="Task Assignment" >
+                                    <div className="flex justify-center">
+                                        <img src={NoDataImg} alt="image" />
+                                    </div>
+                                </Tabs.Item>
+
+                                <Tabs.Item title="Material Allocation" >
+                                    <div className="flex justify-center">
+                                        <img src={NoDataImg} alt="image" />
+                                    </div>
+                                </Tabs.Item>
+
+                                <Tabs.Item title="Documents" >
+                                    <TaskDocumentTab2 />
+                                </Tabs.Item>
                             </Tabs>
                         </div>
-                        {/* <Tabs
-                            aria-label="Tabs with underline"
-                            variant="underline"
-                            onActiveTabChange={(tab) => setActiveTab(tab)}
-                            className='ganttTabs taskTabs'
-                        >
-                            <Tabs.Item active title="Task Insights information" value="Task Insights information" className=''>
-                                {
-                                    activeTab == 0 &&
-                                        isEditOpen ?
-                                        <TaskEditDetails
-                                            handleTaskModelOpen={handleTaskModelOpen}
-                                            setIsEditOpen={setIsEditOpen}
-                                            isEditOpen={isEditOpen}
-                                        /> :
-                                        <TaskViewDetails
-                                            handleTaskModelOpen={handleTaskModelOpen}
-                                            isTaskModal={isTaskModalOpen}
-                                            setIsEditOpen={setIsEditOpen}
-                                        />
-                                }
-                            </Tabs.Item>
-                            <Tabs.Item title="Budget Analysis" value="Budget Analysis">
-                                {activeTab === 1 && <BudgetAnalysis />}
-                            </Tabs.Item>
-                        </Tabs> */}
                     </ModalBody>
                 </div>
             </Modal>

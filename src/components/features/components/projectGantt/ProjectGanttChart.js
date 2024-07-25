@@ -267,6 +267,7 @@ const ProjectGanttChartView = () => {
 
     return (
         <div className='control-pane mt-2 bg-white-900'>
+            <button onClick={handleTaskModelOpen}>Hello</button>
             <div className='control-section mt-2'>
                 <GanttComponent id='Default' dataSource={TasksData} treeColumnIndex={1}
                     ref={ganttInstance}
@@ -299,7 +300,7 @@ const ProjectGanttChartView = () => {
                 </GanttComponent>
             </div>
             <div className='modals'>
-                <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} />
+                {/* <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} /> */}
                 <TaskModal isTaskModalOpen={isTaskModalOpen} handleTaskModelOpen={handleTaskModelOpen} />
             </div>
         </div>
