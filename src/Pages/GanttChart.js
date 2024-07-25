@@ -11,7 +11,7 @@ import Spinner from '../components/Spinner.js';
 
 const GanttChartPage = () => {
 
-    const [isGanttLoading, setLoading] = useState(true)
+    const [isGanttLoading, setLoading] = useState(false)
     const [activeTab, setActiveTab] = useState(0);
 
     // if (isGanttLoading) {
