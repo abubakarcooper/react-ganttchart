@@ -23,12 +23,12 @@ const BudgetAnalysis = () => {
       <div>
         <div className="relative bg-white rounded-xl ">
 
-          <h3 className="text-[23px] font-bold text-black-900 my-4">
+          <h3 className="text-2xl font-extrabold text-black-900 my-4">
             Budget Analysis
           </h3>
 
           <div className="p-4 border rounded-xl">
-            <h3 className="text-lg w-full font-bold text-black-900 my-2 mb-4">
+            <h3 className="text-lg w-full font-extrabold text-black-900 my-2 mb-4">
               Budget Details
             </h3>
 
@@ -38,7 +38,7 @@ const BudgetAnalysis = () => {
                   <div className="text-[9px] lg:text-[15px] md:text-[13px] sm:text-[11px] font-semibold text-black">
                     {item.label}
                   </div>
-                  <div className="flex text-lg md:text-2xl lg:text-3xl sm:text-xl my-2 font-semibold" style={{ color: "rgba(20, 57, 101, 1)" }}>
+                  <div className="flex text-lg md:text-2xl lg:text-5xl sm:text-xl my-2 font-medium text-primary-0" >
                     {item.value} <img src={Dollar} className="ml-2" alt="$" />
                   </div>
                 </div>

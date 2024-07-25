@@ -4,6 +4,7 @@ import TaskViewDetails from "./TaskViewDetails";
 import TaskEditDetails from "./TaskEditDetails";
 import { Tabs } from "flowbite-react";
 import BudgetAnalysis from "./BudgetAnalysis";
+import GanttChartPage from "../../../../../Pages/page";
 
 const TaskBasicTab = ({ isTaskModalOpen, handleTaskModelOpen }) => {
     const [isEditOpen, setIsEditOpen] = useState(false);

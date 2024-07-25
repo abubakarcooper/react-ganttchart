@@ -257,17 +257,18 @@ const ProjectGanttChartView = () => {
 
     console.log(isTaskModalOpen, 'isTaskModalOpen')
 
-    if (isGanttLoading) {
-        return (
-            <div className="flex justify-center items-center">
-                <Spinner />
-            </div>
-        );
-    }
+    // if (isGanttLoading) {
+    //     return (
+    //         <div className="flex justify-center items-center">
+    //             <Spinner />
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className='control-pane mt-2 bg-white-900'>
-            <div className='control-section mt-2'>
+            <button onClick={handleTaskModelOpen}>Hello</button>
+            {/* <div className='control-section mt-2'>
                 <GanttComponent id='Default' dataSource={TasksData} treeColumnIndex={1}
                     ref={ganttInstance}
                     dateFormat={'MMM dd, y'}
@@ -297,9 +298,9 @@ const ProjectGanttChartView = () => {
                     </ColumnsDirective>
                     <Inject services={[Sort, Filter, Resize, ColumnMenu, Selection, Toolbar, PdfExport, DayMarkers, VirtualScroll, Edit]} />
                 </GanttComponent>
-            </div>
+            </div> */}
             <div className='modals'>
-                <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} />
+                {/* <ProjectStartModal singleStartDateModalOpen={isOpenStartDateModal} onSingleStartDateeModalClose={onSingleStartDateeModalClose} /> */}
                 <TaskModal isTaskModalOpen={isTaskModalOpen} handleTaskModelOpen={handleTaskModelOpen} />
             </div>
         </div>

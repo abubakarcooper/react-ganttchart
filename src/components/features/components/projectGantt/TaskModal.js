@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Modal, ModalBody } from "flowbite-react";
 import { Tabs } from "flowbite-react";
 import TaskBasicTab from "./basic/TaskBasicTab";
+import GanttChartPage from "../../../../Pages/page";
+import Table from "../../../../components/features/components/projectGantt/documents/Table";
 
 
 
@@ -34,13 +36,15 @@ const TaskModal = ({ isTaskModalOpen, handleTaskModelOpen, isType = 'view' }) =>
                                 <Tabs.Item title="Available Resources" >
                                     <TaskBasicTab handleTaskModelOpen={handleTaskModelOpen} />
                                 </Tabs.Item>
-                                {/* 
+                            
+                            
                             <Tabs.Item title="Task Assignment" >
                             </Tabs.Item>
                             <Tabs.Item title="Material Allocation" >
                             </Tabs.Item>
                             <Tabs.Item title="Documents" >
-                            </Tabs.Item> */}
+                            <Table/>
+                            </Tabs.Item> 
                             </Tabs>
                         </div>
                         {/* <Tabs
