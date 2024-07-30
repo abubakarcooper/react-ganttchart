@@ -26,7 +26,7 @@ export const taskColumns = [
     { id: 'actualStart', label: 'Actual Start' },
     { id: 'actualEnd', label: 'Actual End' },
     { id: 'amount', label: 'Amount' },
-    { id: 'completion', label: '%age Completion' },
+    { id: 'completion', label: 'Completion' },
     { id: 'action', label: 'Action' }
 ];
 

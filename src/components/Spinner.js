@@ -4,9 +4,9 @@ const Spinner = () => {
   return (
     <ThreeDots
       visible={true}
-      height="80"
+      height="200"
       width="80"
-      color="#026087"
+      color="#2a486b"
       radius="9"
       ariaLabel="three-dots-loading"
       wrapperStyle={{}}

@@ -4,7 +4,8 @@ import OverviewCard from './features/components/projectOverview/Overview1.js';
 import TaskPerformance from './features/components/projectOverview/Taskperformance.js';
 import ProjectTaskTable from './features/components/projectOverview/ProjectTask.js';
 
-const ProjectOverview = () => {
+
+const ProjectOverview = ({ allProjectTasks, projectInfo }) => {
     const [isGanttLoading, setLoading] = useState(false)
 
     if (isGanttLoading) {
@@ -26,7 +27,7 @@ const ProjectOverview = () => {
                 </div>
             </div>
             <div className=''>
-                <ProjectTaskTable />
+                <ProjectTaskTable allProjectTasks={allProjectTasks} />
             </div>
         </div>
     );
