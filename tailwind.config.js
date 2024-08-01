@@ -28,6 +28,7 @@ module.exports = {
         black: {
           0: 'var(--color-black-900)',
           1: 'var(--color-black-800)',
+          2: 'var(--color-black-700)',
         },
         white: {
 
@@ -39,6 +40,7 @@ module.exports = {
         gray: {
           1: 'var(--color-gray-800)',
           2: 'var(--color-gray-700)',
+          5: 'var(--color-gray-400)',
 
         }
       }
