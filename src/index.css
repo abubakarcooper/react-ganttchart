@@ -72,7 +72,7 @@ body {
   color: var(--color-white-900);
 }
 
-.checkbox-label input[type="checkbox"] {
+input[type="checkbox"] {
   appearance: none; /* Remove default appearance */
   -webkit-appearance: none; /* Remove default appearance for WebKit browsers */
   -moz-appearance: none; /* Remove default appearance for Mozilla browsers */
@@ -82,9 +82,10 @@ body {
   border-radius: 4px;
   outline: none;
   margin-right: 8px;
+  --tw-ring-shadow: none !important;
 }
 
-input[type="checkbox"]:checked.customcheckbox {
+input[type="checkbox"]:checked {
   background-color: var(--color-primary-900);
 }
 

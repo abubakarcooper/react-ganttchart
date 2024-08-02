@@ -66,3 +66,15 @@ export const documentsColumn =
             "id": "action"
         }
     ]
+
+
+export const dprTableColumns =
+    [
+        { id: 'date', label: 'Date' },
+        { id: 'projectName', label: 'Project Name' },
+        { id: 'taskName', label: 'Task Name' },
+        { id: 'supervisor', label: 'Supervisor' },
+        { id: 'reference', label: 'Reference' },
+        { id: 'completion', label: 'Completion' },
+        { id: 'action', label: 'Action' }
+    ];

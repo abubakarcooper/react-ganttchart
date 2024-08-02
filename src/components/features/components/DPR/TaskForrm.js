@@ -564,20 +564,22 @@ const TaskForm = () => {
 const TaskFormDPR = ({ setIsEditOpen, isEditOpen }) => {
     return (
         <>
-            <div className="flex justify-between mx-5 mb-2 items-center">
-                <div>
-                    <img src={Logo} />
-                </div>
-                <h2 className="text-2xl text-primary-0 font-extrabold px-3 py-2">
-                    Daily Progress Form
-                </h2>
-                <div>
-                    <label className="block text-sm font-semibold mt-6 text-black-2 text-black-2">Date</label>
-                    <input
-                        type="date"
-                        placeholder=""
-                        className="mt-1 block w-full  border-gray-300 shadow-sm rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 h-[44px] w-[350px]"
-                    />
+            <div className="mx-5 mb-2 bg-gray-5 rounded border">
+                <div className="flex justify-between  p-2 items-center ">
+                    <div>
+                        <img src={Logo} />
+                    </div>
+                    <h2 className="text-3xl text-primary-0  px-3 py-2">
+                        Daily Progress Form
+                    </h2>
+                    <div className="w-80">
+                        <label className="block text-sm font-semibold mt-6 text-black-2 text-black-2">Date</label>
+                        <input
+                            type="date"
+                            placeholder=""
+                            className="mt-1 block w-full  border-gray-300 shadow-sm rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 h-[44px] w-[350px]"
+                        />
+                    </div>
                 </div>
             </div>
             <div className="gantt-chart bg-white-2 mx-5 p-3  border-transparent rounded-lg">

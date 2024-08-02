@@ -11,7 +11,7 @@ function App() {
       path: "/",
       errorElement: <Error />,
       children: [
-        { path: "/gantt", element: <GanttChartPage /> },
+        { path: "/gant", element: <GanttChartPage /> },
         { path: "/", element: <DailyProgressReport /> },
         { path: "*", element: <PageFound /> },
       ],

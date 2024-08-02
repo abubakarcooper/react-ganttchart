@@ -90,7 +90,6 @@ import Documents from './components/Documents'
 const ParentPage = () => {
     return (
         <>
-            <Header />
             <div className='w-1200px m-auto'>
                 <ProjectDetail />
                 <ProjectDescription />
