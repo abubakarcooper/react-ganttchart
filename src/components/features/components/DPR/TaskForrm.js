@@ -102,7 +102,7 @@ const TaskDetails = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 mt-2 md:grid-cols-3 gap-4">
                 <div>
                     <label className="text-sm font-semibold text-black-2">
-                        Date
+                        Issue Date
                     </label>
                     <input
                         type="date"
@@ -550,10 +550,6 @@ const TaskForm = () => {
 
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
 

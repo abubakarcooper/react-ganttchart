@@ -13,7 +13,19 @@ import { ExcelExport } from "@syncfusion/ej2-react-gantt";
 import { Popover, Button } from "flowbite-react";
 
 
-const PopUpOverFilter = ({ children, className, title }) => {
+const PopUpOverFilter = ({ children, className, title, setColumns, allColumns }) => {
+    console.log(allColumns, 'allColumns')
+
+    const showHideTableColumns = (event, index) => {
+        const columnId = event.target.name;
+        setColumns(prevColumns =>
+            prevColumns.map(column =>
+                column.id === columnId ? { ...column, isActive: !column.isActive } : column
+            )
+        );
+    };
+
+
     return (
         <Popover
             aria-labelledby="default-popover"
@@ -23,10 +35,10 @@ const PopUpOverFilter = ({ children, className, title }) => {
                         <h3 id="default-popover" className="font-bold text-base text-primary-0">{title}</h3>
                     </div>
                     <div className="py-2 text-primary-0 font-normal">
-                        <div className="flex items-center border-b py-3.5 pl-4"><input type="checkbox" className="ring-offset-0	ring-0" /><p className="ml-2">Project Name</p></div>
-                        <div className="flex items-center border-b py-3.5 pl-4"><input type="checkbox" /><p className="ml-2">Task Name</p></div>
-                        <div className="flex items-center border-b py-3.5 pl-4"><input type="checkbox" /><p className="ml-2">Reference</p></div>
-                        <div className="flex items-center border-b py-3.5 pl-4"><input type="checkbox" /><p className="ml-2">Supervisor</p></div>
+                        {
+                            dprTableColumns.map((column, index) => <div className="flex items-center border-b py-3.5 pl-4"><input type="checkbox" className="ring-offset-0	ring-0" checked={allColumns[index].isActive == true} name={column.id} onClick={(event) => showHideTableColumns(event, index)} /><p className="ml-2">{column.label}</p></div>
+                            )
+                        }
                         <div className="mt-6 mb-3">
                             <button
                                 className="py-2 text-sm font-semibold text-white-2 bg-primary-0 rounded-lg flex items-center justify-center w-[160px] m-auto">
@@ -53,6 +65,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
     const [pageSize, sePageSize] = useState(4);
     const [tableActiveTab, setTableActiveTab] = useState('pending')
     const [dateType, setDateType] = useState('weekly')
+    const [columns, setColumns] = useState(dprTableColumns)
 
 
     useEffect(() => {
@@ -116,7 +129,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                             // onChange={(event) => searchTasks(event.target.value)}
                             />
                         </div>
-                        <PopUpOverFilter title='Search'>
+                        <PopUpOverFilter title='Search' allColumns={columns} setColumns={setColumns} >
                             <div className="border border-black-0 rounded py-2 px-1.5 cursor-pointer">
                                 <TbFilter className="w-6 h-5 " />
                             </div>
@@ -131,9 +144,9 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                 {/* //// Table /// */}
                 <div className="border rounded-xl mt-8">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-xl ">
-                        <thead className="text-sm text-gray-700 capitalise bg-gray-5 rounded-xl">
+                        {/* <thead className="text-sm text-gray-700 capitalise bg-gray-5 rounded-xl">
                             <tr className="rounded-xl">
-                                {dprTableColumns.map((column, index) => (
+                                {columns.map((column, index) => (
                                     index == 0 ?
                                         <th
                                             key={column.id}
@@ -141,7 +154,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                                             className={`px-6 font-semibold text-base py-3`}
                                         >
 
-                                            <PopUpOverFilter className="ml-10 mt-2" title='Show/Hide Columns'>
+                                            <PopUpOverFilter className="ml-10 mt-2" title='Show/Hide Columns' allColumns={columns} setColumns={setColumns}>
                                                 <img src={IconExclude} alt="No-Image" className="cursor-pointer" />
                                                 <span> {column.label}</span>
                                             </PopUpOverFilter>
@@ -157,35 +170,57 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                                         </th>
                                 ))}
                             </tr>
+                        </thead> */}
+
+                        <thead className="text-sm text-gray-700 capitalise bg-gray-5 rounded-xl">
+                            <tr className="rounded-xl">
+                                {columns.map((column, index) => (
+                                    column.isActive && (
+                                        <th
+                                            key={column.id}
+                                            scope="col"
+                                            className={`px-6 font-semibold text-base py-3`}
+                                        >
+                                            {index === 0 ? (
+                                                <PopUpOverFilter className="ml-10 mt-2" title='Show/Hide Columns' allColumns={columns} setColumns={setColumns}>
+                                                    <img src={IconExclude} alt="No-Image" className="cursor-pointer" />
+                                                    <span> {column.label}</span>
+                                                </PopUpOverFilter>
+                                            ) : column.label}
+                                        </th>
+
+
+                                    )
+                                ))}
+                                <th
+                                    scope="col"
+                                    className={`px-6 font-semibold text-base py-3`}
+                                >
+                                    Action
+                                </th>
+
+                            </tr>
                         </thead>
                         <tbody>
-                            {tasks?.length ? projectTasks.map((task, index) => (
-                                <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 text-black-2 text-sm">
-                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-[10%]">
-                                        {task.date}
-                                    </th>
-                                    <td className="px-6 py-4 w-[22%]">
-                                        {task.projectName}
-                                    </td>
-                                    <td className="px-6 py-4 w-[30%]">
-                                        {task.taskName}
-                                    </td>
-                                    <td className="px-6 py-4 w-[10%]">
-                                        {task.supervisor || '-'}
-                                    </td>
-                                    <td className="px-6 py-4 w-[10%]">
-                                        {task.reference || '-'}
-                                    </td>
-                                    <td className="px-6 py-4 w-[8%]">
-                                        {task.completion || '-'}
-                                    </td>
-                                    <td className="px-6 py-4  w-[10%]">
-                                        <FaEye className="text-black-2 text-xl" onClick={handleTaskModelOpen} />
-                                    </td>
-                                </tr>
-                            )) :
+                            {projectTasks.length > 0 ? (
+                                projectTasks.map((task, index) => (
+                                    <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 text-black-2 text-sm">
+                                        {columns.map((column) =>
+                                            column.isActive && (
+                                                <td key={column.id} className={`px-6 py-4 ${column.width || 'w-auto'}`}>
+                                                    {task[column.id] || '-'}
+                                                </td>
+                                            )
+                                        )}
+
+                                        <td className="px-6 py-4 w-[10%]">
+                                            <FaEye className="text-black-2 text-xl cursor-pointer" onClick={() => handleTaskModelOpen(task)} />
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
                                 <tr>
-                                    <td colSpan={dprTableColumns.length} className="text-center py-6">
+                                    <td colSpan={columns.filter(col => col.isActive).length} className="text-center py-6">
                                         <img
                                             src={ImgNoData}
                                             alt="No data available"
@@ -194,7 +229,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                                         />
                                     </td>
                                 </tr>
-                            }
+                            )}
                         </tbody>
                     </table>
                     {
