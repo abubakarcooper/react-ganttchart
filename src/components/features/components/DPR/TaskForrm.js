@@ -4,10 +4,6 @@ import Logo from '../../../../images/worksheet/logo.svg'
 import Upload from '../../../../images/Featured.svg'
 import tick from '../../../../images/tick.png'
 import del from '../../../../images/delete.png'
-import img1 from '../../../../images/img1.png'
-import img2 from '../../../../images/img2.png'
-import img3 from '../../../../images/img3.png'
-import img4 from '../../../../images/img4.png'
 import ProgressBar from "@ramonak/react-progress-bar";
 import Select from "react-select";
 import { BsArrowReturnRight } from "react-icons/bs";
@@ -15,10 +11,14 @@ import { FaPlus, FaTrash, FaMinus } from "react-icons/fa6";
 import { useForm, Controller, useFieldArray } from "react-hook-form"
 import validationMessages from "../../../../constant/formError";
 import { FaRegFilePdf } from "react-icons/fa";
+import { MdOndemandVideo } from "react-icons/md";
 import { IoDocumentTextOutline } from "react-icons/io5";
-import { getApi } from "../../../../apis/estimatesheet";
+import { getApi, addRecord } from "../../../../apis/estimatesheet";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { firebaseStorage } from "../../../../apis/firebase";
+import { toast } from "react-toastify";
+import ganttMessage from "../../../../constant/ganttMessage";
+import moment from "moment/moment";
 
 const statuses = [
     {
@@ -35,8 +35,8 @@ const statuses = [
     { label: "Pending", color: "bg-[#821DBD1A]", textColor: "text-[#821DBD]" },
 ];
 
-
-const TaskDetails = ({ projectList, subcontractorsList, errors, register, control }) => {
+// supervisorList={supervisorList}
+const TaskDetails = ({ projectList, supervisorList, errors, register, control, supervisorSearchLoading }) => {
     return (
         <div className="space-y-4 mt-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -89,6 +89,7 @@ const TaskDetails = ({ projectList, subcontractorsList, errors, register, contro
                             <Select
                                 {...field}
                                 className="basic-single rounded-md"
+                                isLoading={supervisorSearchLoading}
                                 isClearable={false}
                                 isSearchable={true}
                                 isMulti={false}
@@ -108,7 +109,7 @@ const TaskDetails = ({ projectList, subcontractorsList, errors, register, contro
                                         fontSize: "12px",
                                     }),
                                 }}
-                                options={subcontractorsList}
+                                options={supervisorList}
                             />
                         )}
                     />
@@ -127,12 +128,12 @@ const TaskDetails = ({ projectList, subcontractorsList, errors, register, contro
                     {...register("Subject_field", {
                         required: "Subject is required",
                         minLength: {
-                            value: 5,
-                            message: "Subject must be at least 5 characters long"
+                            value: 20,
+                            message: "Subject must be at least 20 characters long"
                         },
                         maxLength: {
-                            value: 20,
-                            message: "Subject cannot exceed 20 characters"
+                            value: 250,
+                            message: "Subject cannot exceed 250 characters"
                         }
                     })}
                     placeholder="--------------------"
@@ -188,6 +189,10 @@ const TaskDetails = ({ projectList, subcontractorsList, errors, register, contro
                         step="any"
                         {...register("Temperature_and_Weather", {
                             required: "Temperature and Weather is required",
+                            maxLength: {
+                                value: 3,
+                                message: "Temperature maximum limit 3 digit long"
+                            },
                             validate: value =>
                                 !isNaN(value) && Number(value) >= 0 ? true : "Please enter a valid decimal number"
                         })}
@@ -220,12 +225,11 @@ const TaskDetails = ({ projectList, subcontractorsList, errors, register, contro
 };
 
 
-const Workerdetails = ({ control, errors }) => {
+const Workerdetails = ({ control, errors, subcontractorList, subcontractorsSearchLoading }) => {
     const { fields: workers, append, remove } = useFieldArray({
         control,
         name: 'workers'
     });
-
 
     return (
         <div className="space-y-4 mt-6">
@@ -241,6 +245,7 @@ const Workerdetails = ({ control, errors }) => {
                                 <Select
                                     {...field}
                                     className="basic-single rounded-md"
+                                    isLoading={subcontractorsSearchLoading}
                                     isClearable={false}
                                     isSearchable={true}
                                     isMulti={false}
@@ -250,7 +255,7 @@ const Workerdetails = ({ control, errors }) => {
                                         input: (base) => ({ ...base, "input:focus": { boxShadow: "none" } }),
                                         control: (base) => ({ ...base, background: "#ffff", transition: "none", fontSize: "12px" })
                                     }}
-                                    options={[{ label: 'Cooper Build', value: '' }]}
+                                    options={subcontractorList}
                                 />
                             )}
                         />
@@ -319,8 +324,7 @@ const Workerdetails = ({ control, errors }) => {
     );
 };
 
-
-const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
+const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, taskSearchLoading }) => {
     const { append, remove } = useFieldArray({
         control,
         name: 'tasks'
@@ -349,6 +353,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
                                     <Select
                                         {...field}
                                         className="basic-single rounded-md"
+                                        isLoading={taskSearchLoading}
                                         isClearable={false}
                                         isSearchable={true}
                                         isMulti={false}
@@ -358,7 +363,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
                                             input: (base) => ({ ...base, "input:focus": { boxShadow: "none" } }),
                                             control: (base) => ({ ...base, background: "#ffff", transition: "none", fontSize: "12px" })
                                         }}
-                                        options={[{ label: 'Cooper Build', value: '' }]}
+                                        options={tasksList}
                                     />
                                 )}
                             />
@@ -395,7 +400,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
                         <Controller
                             name={`tasks[${index}].reportIncident`}
                             control={control}
-                            rules={{ required: "ReportIncident is required" }}
+                            // rules={{ required: "ReportIncident is required" }}
                             render={({ field }) => (
                                 <input
                                     {...field}
@@ -405,11 +410,11 @@ const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
                                 />
                             )}
                         />
-                        {errors.tasks?.[index]?.reportIncident && (
+                        {/* {errors.tasks?.[index]?.reportIncident && (
                             <p className="mt-1 text-xs text-red-600 dark:text-red-400">
                                 {errors.tasks[index].reportIncident.message}
                             </p>
-                        )}
+                        )} */}
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                         <div>
@@ -473,7 +478,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
                         <Controller
                             name={`tasks[${index}].progressDetail`}
                             control={control}
-                            // rules={{ required: "ProgressDetail is required" }}
+                            rules={{ required: "ProgressDetail is required" }}
 
                             render={({ field }) => (
                                 <textarea
@@ -516,12 +521,24 @@ const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
 };
 
 
-const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectList, formLoading }) => {
-    const [fileInfo, setFileInfo] = useState([]);
-    const [progressMap, setProgressMap] = useState({});
+const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) => {
     const progressBarColors = ['#479960', 'rgb(63, 165, 233)'];
     const dateInputRef = useRef(null);
     const [project, setProject] = useState(null)
+
+    const [supervisorList, setSuperVisorList] = useState([]);
+    const [subcontractorList, setSubcontractorsList] = useState([]);
+    const [tasksList, setTasksList] = useState([]);
+
+    const [workerSearchLoading, setWorkerSearchLoading] = useState(false);
+    const [taskSearchLoading, setTaskSearchLoading] = useState(false);
+    const [supervisorSearchLoading, setSupervisorLoading] = useState(false);
+    const [subcontractorsSearchLoading, setSubcontractorsLoading] = useState(false);
+    const [tasksSearchLoading, setTasksLoading] = useState(false);
+    const [filesToUpload, setFilesToUpload] = useState([]);
+    const [progressMap, setProgressMap] = useState({});
+    const [fileInfo, setFileInfo] = useState([]);
+
 
     const { control, handleSubmit, register, formState: { errors, tasks }, setValue, watch } = useForm({
         defaultValues: {
@@ -545,10 +562,15 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
         }
     });
 
+    const prevProjectName = useRef();
     const watchedValues = watch();
     const projectName = watch(`Project_Name`);
 
     console.log(projectName, 'projectName')
+
+    useEffect(() => {
+        console.log('Current form errors:', errors);
+    }, [errors]);
 
     useEffect(() => {
         console.log('Form values changed:', watchedValues);
@@ -559,37 +581,126 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
             const today = new Date().toISOString().split('T')[0];
             dateInputRef.current.value = today;
         }
-    }, []);
+        getAllContacts()
 
-    const prevProjectName = useRef();
+    }, []);
 
     useEffect(() => {
         if (prevProjectName.current !== projectName.value) {
             prevProjectName.current = projectName.value;
-            onChangeProjectData()
-
+            getAllSupervisors()
+            getAllProjectTasks()
         }
     }, [projectName]);
 
+    useEffect(() => {
+        console.log('Current progress map:', progressMap);
+    }, [progressMap]);
 
-    const onChangeProjectData = async () => {
+
+    const getSearchedWorkers = async (value) => {
+        setWorkerSearchLoading(true)
         try {
+            const contacts = await getApi("All_Contacts", `Company_Name1.contains("${value}")`)
+            setSubcontractorsList(
+                subcontractorList?.length > 0 ? subcontractorList : []
+            );
+            setWorkerSearchLoading(false);
+        }
+        catch (err) {
+            console.log(err)
+            setWorkerSearchLoading(false);
+            setValue('Project_Supervisor', null);
+        }
+    };
+
+    const getAllSupervisors = async () => {
+        try {
+            setValue('Project_Supervisor', null);
+            setSupervisorLoading(true)
+
             if (!project) {
                 const dprReport = await getApi("Daily_Log_Report", `Project==${projectName.value}`);
+                const list = dprReport?.map((d) => ({
+                    label: d?.Employee_Name?.display_value,
+                    value: d?.ID,
+                }));
 
-                console.log(dprReport, 'dprReport')
+                setSuperVisorList(list)
+                setSupervisorLoading(false)
+
+                return
             }
+            setSuperVisorList([])
+            setSupervisorLoading(false)
+
         }
         catch (error) {
             console.log(error)
+            setSupervisorLoading(false)
+            setSuperVisorList([])
+            setValue('Project_Supervisor', null);
+
         }
     }
 
-    const onSubmit = (data) => {
-        console.log(data, 'data')
+    const getAllContacts = async (search = '') => {
+        try {
+            // setValue('Project_Supervisor', null);
+            setSubcontractorsLoading(true)
+            const data = await getApi("All_Contacts");
+            const list = data?.map((d) => ({
+                label: d?.Contact_Name?.display_value,
+                value: d?.ID,
+            }));
 
+            setSubcontractorsList(list)
+            setSubcontractorsLoading(false)
+
+            // setSuperVisorList(list)
+            // setSupervisorLoading(false)
+
+            // setSuperVisorList([])
+            // setSupervisorLoading(false)
+
+        }
+        catch (error) {
+            console.log(error)
+            setSubcontractorsLoading(false)
+            // setSupervisorLoading(false)
+            // setSuperVisorList([])
+            // setValue('Project_Supervisor', null);
+
+        }
     }
 
+    const getAllProjectTasks = async () => {
+        setValue('Project_Supervisor', null);
+        setTaskSearchLoading(true)
+        try {
+            if (!project) {
+                var criteria = 'Project.ID==' + projectName.value
+                const allTasks = await getApi("Project_Deliverable_Task_Report", criteria);
+
+                console.log(allTasks, 'allTasks')
+                const list = allTasks?.map((d) => ({
+                    label: d?.Task_Name1,
+                    value: d?.ID,
+                    ...d
+                }));
+                setTasksList(list)
+                setTaskSearchLoading(false)
+                return
+            }
+            setTaskSearchLoading(false)
+
+            // setSupervisorLoading(false)
+        }
+        catch (error) {
+            console.log(error)
+            setTaskSearchLoading(false)
+        }
+    }
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles) => {
@@ -600,11 +711,71 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                 progress: 0
             }));
             setFileInfo(prevFiles => [...prevFiles, ...newFiles]);
-            newFiles.forEach(file => simulateUploadProgress(file));
+            // newFiles.forEach(file => simulateUploadProgress(file));
         },
-        accept: 'image/*,application/pdf',
+        accept: {
+            'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
+            'application/pdf': ['.pdf'],
+            'video/*': ['.mp4', '.mov', '.avi', '.mkv'],
+            'application/msword': ['.doc', '.docx'],
+        },
         multiple: true
     });
+
+    const uploadFilesToFirebase = async (files) => {
+        if (!files || files.length === 0) {
+            console.error('No files provided for upload');
+            return toast.error(ganttMessage.NO_FILES);
+        }
+
+        const uploadPromises = files.map(file => {
+            const storageRef = ref(firebaseStorage, `${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            return new Promise((resolve, reject) => {
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        console.log(snapshot.bytesTransferred, 'snapshot.bytesTransferred ');
+                        console.log(snapshot.totalBytes, 'snapshot.totalBytes ');
+
+                        const progress = ((snapshot.bytesTransferred || 0) / (snapshot.totalBytes || 0)) * 100;
+                        // console.log(progress, 'progress')
+                        // setProgressMap(prevMap => ({
+                        //     ...prevMap,
+                        //     [file.name]: progress
+                        // }));
+                        simulateUploadProgress(file)
+                    },
+                    (err) => {
+                        console.error("Error uploading file:", err);
+                        reject(err);
+                    },
+                    async () => {
+                        try {
+                            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                            console.log("File available at", downloadURL);
+                            resolve(downloadURL);
+                        } catch (error) {
+                            console.error("Error retrieving download URL:", error);
+                            reject(error);
+                        }
+                    }
+                );
+            });
+        });
+
+        return Promise.all(uploadPromises)
+            .then(downloadURLs => {
+                console.log("All files uploaded successfully:", downloadURLs);
+                return downloadURLs;
+            })
+            .catch(error => {
+                console.error("Error uploading files:", error);
+                throw error;
+            });
+    };
+
     const simulateUploadProgress = (file) => {
         let progress = 0;
         const interval = setInterval(() => {
@@ -618,6 +789,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
             }
         }, 500);
     };
+
     const handleDelete = (fileName) => {
         setFileInfo(prevFiles => prevFiles.filter(file => file.name !== fileName));
         setProgressMap(prevMap => {
@@ -625,11 +797,17 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
             return rest;
         });
     };
+
     const getFileIcon = (file) => {
         const ext = file.name.split('.').pop().toLowerCase();
+        console.log(ext, 'ext.ext')
         if (ext === 'pdf') {
             return <FaRegFilePdf className='w-24 h-14 text-[#F40F02]' />;
-        } else if (ext === 'doc' || ext === 'docx') {
+        }
+        else if (ext === 'mp4' || ext === 'mov' || ext === 'avi' || ext === 'mkv') {
+            return <MdOndemandVideo className='w-24 h-14 text-[#F40F02]' />
+        }
+        else if (ext === 'doc' || ext === 'docx') {
             return <IoDocumentTextOutline className='w-24 h-14 text-[#0484F6]' />;
         } else if (['png', 'jpg', 'jpeg'].includes(ext)) {
             return <img src={file.src} alt='Uploaded Img' className='w-24 h-14 object-contain' />;
@@ -638,6 +816,101 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
         }
     };
 
+
+    const addWorkerDataReq = async (object) => {
+        const id = object?.id || null;
+        const payload = object
+        try {
+            const data = await addRecord(payload,
+                "All_Worker_Details",
+                "Worker_Details");
+            return data;
+        } catch (error) {
+            console.log("error", error);
+            toast.error(ganttMessage.WENT_WRONG);
+        }
+    };
+
+    const addTaskDataReq = async (payload) => {
+        try {
+            const data = await addRecord(payload,
+                "All_Task_Details",
+                "Completed_Task_Details");
+            return data;
+        } catch (error) {
+            console.log("error", error);
+            toast.error(ganttMessage.WENT_WRONG);
+        }
+    };
+
+    const onSubmit = async (data) => {
+
+
+
+        const projectDetail = {
+            Project_Name: data?.Project_Name?.value,
+            Project_Supervisor: "1556703000046292323" || data?.Project_Supervisor?.value,
+            Description: data?.description
+        }
+
+        const {
+            Subject_field,
+            Issue_Date,
+            Reference,
+            Temperature_and_Weather,
+            description,
+        } = data
+
+
+        const obj1 = {
+            Subject_field,
+            Issue_Date: moment(Issue_Date).format('MM-DD-YYYY'),
+            Reference,
+            Temperature_and_Weather,
+            description,
+            ...projectDetail,
+        }
+
+        const taskDetails = {
+            Task_Name: '',
+            Equipment_Used: '',
+            Any_Report_incident: '',
+            Completion_Percentage: '',
+            Task_Status: ''
+        }
+
+        console.log(data, 'data')
+        console.log(fileInfo, 'fileInfo')
+
+        let urls = ''
+        if (fileInfo?.length) {
+            urls = await uploadFilesToFirebase(fileInfo);
+        }
+
+
+        // const workerPromises = data?.workers.map(async (object) => {
+        //     await addWorkerDataReq({ Worker_Name: object.workerName.value, Designation: '' })
+        // });
+        // const workerResults = await Promise.all(workerPromises);
+        // obj1.Worker_Details = ["1556703000055898212"]
+
+
+        // const taskPromises = data?.tasks.map(async (object) => {
+        //     await addTaskDataReq({
+        //         Task_Name: object.taskName.value,
+        //         Equipment_Used: object.equipmentUsed,
+        //         Any_Report_incident: object.reportIncident,
+        //         Completion_Percentage: object.completionPercentage,
+        //         Task_Status: object.status
+        //     })
+        // });
+        // const tasksResults = await Promise.all(taskPromises);
+        // console.log(tasksResults, 'tasksResults')
+
+
+    }
+
+    console.log(progressMap, 'progressMap.progressMap')
 
     return (
         <>
@@ -673,7 +946,13 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                         <p className="font-bold text-lg text-black-0">Project Details</p>
                                     </div>
                                     <hr className="bg-slate-200	h-px " />
-                                    <TaskDetails projectList={projectList} subcontractorsList={subcontractorsList} errors={errors} register={register} control={control}
+                                    <TaskDetails
+                                        supervisorSearchLoading={supervisorSearchLoading}
+                                        projectList={projectList}
+                                        supervisorList={supervisorList}
+                                        errors={errors}
+                                        register={register}
+                                        control={control}
                                     />
                                 </div>
 
@@ -688,7 +967,18 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                         type="text"
                                         className="mt-2 text-gray-1 block w-full border border-[#2F3C461A] focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                         rows="4"
-                                        {...register("description", { required: "Description is required" })}
+                                        {...register("description", {
+                                            required: "Description is required",
+                                            minLength: {
+                                                value: 10,
+                                                message: "Description must be at least 20 characters long"
+                                            },
+                                            maxLength: {
+                                                value: 1000,
+                                                message: "Description cannot exceed 1000 characters"
+                                            }
+
+                                        })}
                                     ></textarea>
                                     {errors.description && (
                                         <p className="mt-2 text-xs text-red-600 dark:text-red-400">
@@ -702,7 +992,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                         <p className="font-bold text-lg text-black-0">Worker  Details</p>
                                     </div>
                                     <hr className="bg-slate-200	h-px " />
-                                    <Workerdetails register={register} control={control} errors={errors} />
+                                    <Workerdetails register={register} control={control} errors={errors} subcontractorList={subcontractorList} subcontractorsSearchLoading={subcontractorsSearchLoading} />
                                 </div>
 
                                 <div className="project_description mt-8">
@@ -710,7 +1000,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                         <p className="font-bold text-lg text-black-0">Completed Task Details</p>
                                     </div>
                                     <hr className="bg-slate-200	h-px " />
-                                    <Completedtaskdetails register={register} control={control} errors={errors} setValue={setValue} watch={watch} />
+                                    <Completedtaskdetails register={register} control={control} errors={errors} setValue={setValue} watch={watch} tasksList={tasksList} taskSearchLoading={taskSearchLoading} />
                                 </div>
 
                                 <div className="project_attachment">

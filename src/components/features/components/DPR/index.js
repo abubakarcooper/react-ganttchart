@@ -114,26 +114,21 @@ const TaskDPReport = () => {
     const getDPRDetail = async (active = true) => {
         try {
             const projects = await getApi("All_Projects", `Active==${active}`)
-            let accountCriteria = ``
-            const allContacts = await getApi("All_Contacts", accountCriteria);
+            // const allContacts = await getApi("All_Contacts", `Company_Name1!=""`);
 
-
-            const subcontractorList = allContacts?.map((d) => ({
-                label: d?.Contact_Name?.display_value,
-                value: d?.ID,
-            }));
-
-            setSubcontractorsList(
-                subcontractorList?.length > 0 ? subcontractorList : []
-            );
+            // const subcontractorList = allContacts?.map((d) => ({
+            //     label: d?.Contact_Name?.display_value,
+            //     value: d?.ID,
+            // }));
 
             const projectList = projects?.map((item) => ({
                 label: item?.Job_Name + " - " + item?.Project_ID,
                 value: item?.ID,
             }));
 
-
-
+            // setSubcontractorsList(
+            //     subcontractorList?.length > 0 ? subcontractorList : []
+            // );
             setProjectList(projectList?.length > 0 ? projectList : [])
         }
         catch (error) {
@@ -141,7 +136,6 @@ const TaskDPReport = () => {
         }
     }
 
-    console.log(subcontractorsList, 'subcontractorsList')
 
 
     return (
@@ -159,7 +153,8 @@ const TaskDPReport = () => {
                     isTaskModalOpen &&
                     <TaskModalDPR isTaskModalOpen={isTaskModalOpen} handleTaskModelOpen={handleTaskModelAddOpen} >
                         <TaskFormDPR
-                            subcontractorsList={subcontractorsList}
+                            // subcontractorsList={subcontractorsList}
+                            // setSubcontractorsList={setSubcontractorsList}
                             projectList={projectList}
                             formLoading={formLoading}
                         />
