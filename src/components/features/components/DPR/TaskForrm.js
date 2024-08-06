@@ -13,6 +13,9 @@ import { BsArrowReturnRight } from "react-icons/bs";
 import { FaPlus, FaTrash, FaMinus } from "react-icons/fa6";
 import { useForm, Controller, useFieldArray } from "react-hook-form"
 import validationMessages from "../../../../constant/formError";
+import { getApi } from "../../../../apis/estimatesheet";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { firebaseStorage } from "../../../../apis/firebase";
 
 const statuses = [
     {
@@ -510,6 +513,7 @@ const Completedtaskdetails = ({ control, errors, setValue }) => {
 const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectList, formLoading }) => {
 
     const dateInputRef = useRef(null);
+    const [project, setProject] = useState(null)
 
     const { control, handleSubmit, register, formState: { errors, tasks }, setValue, watch } = useForm({
         defaultValues: {
@@ -533,8 +537,10 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
         }
     });
 
-
     const watchedValues = watch();
+    const projectName = watch(`Project_Name`);
+
+    console.log(projectName, 'projectName')
 
     useEffect(() => {
         console.log('Form values changed:', watchedValues);
@@ -546,6 +552,30 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
             dateInputRef.current.value = today;
         }
     }, []);
+
+    const prevProjectName = useRef();
+
+    useEffect(() => {
+        if (prevProjectName.current !== projectName.value) {
+            prevProjectName.current = projectName.value;
+            onChangeProjectData()
+
+        }
+    }, [projectName]);
+
+
+    const onChangeProjectData = async () => {
+        try {
+            if (!project) {
+                const dprReport = await getApi("Daily_Log_Report", `Project==${projectName.value}`);
+
+                console.log(dprReport, 'dprReport')
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
     const onSubmit = (data) => {
         console.log(data, 'data')
