@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskFormDPR from "./TaskForrm";
 import TaskViewDPR from "./TaskView";
 import TaskModalDPR from "./modal/TaskModel";
 import { FaPlus } from "react-icons/fa6";
 import TableDPR from "./components/TableDPR";
+import { getApi } from "../../../../apis/estimatesheet";
 
 const tasks = [
     {
@@ -93,6 +94,14 @@ const TaskDPReport = () => {
     const [showForm, setUseForm] = useState(false)
     const [showTaskView, setTaskView] = useState(false)
     const [isTaskModalOpen, setTaskModalOpen] = useState(false);
+    const [projects, setProjects] = useState([])
+    const [subcontractorsList, setSubcontractorsList] = useState([]);
+    const [projectList, setProjectList] = useState([]);
+    const [formLoading, setFormLoading] = useState(true);
+
+    useEffect(() => {
+        getDPRDetail()
+    }, [])
 
     const handleTaskModelAddOpen = () => {
         setTaskModalOpen(!isTaskModalOpen)
@@ -102,19 +111,57 @@ const TaskDPReport = () => {
         setTaskView(!showTaskView)
     }
 
+    const getDPRDetail = async (active = true) => {
+        try {
+            const projects = await getApi("All_Projects", `Active==${active}`)
+            let accountCriteria = ``
+            const allContacts = await getApi("All_Contacts", accountCriteria);
+
+            const subcontractorList = allContacts?.map((d) => ({
+                label: d?.Contact_Name?.display_value,
+                value: d?.ID,
+            }));
+
+            const projectList = projects?.map((item) => ({
+                label: item?.Job_Name + " - " + item?.Project_ID,
+                value: item?.ID,
+            }));
+
+            setSubcontractorsList(
+                subcontractorList?.length > 0 ? subcontractorList : []
+            );
+
+            setProjectList(projectList?.length > 0 ? projectList : [])
+        }
+        catch (error) {
+            console.log(error, 'error')
+        }
+    }
+
+    console.log(subcontractorsList, 'subcontractorsList')
+
+
     return (
         <>
             <div className="myForm p-4 bg-white-2">
                 {
+
+                    showTaskView &&
                     <TaskModalDPR isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} >
                         <TaskViewDPR isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} />
                     </TaskModalDPR>
                 }
 
                 {
+                    isTaskModalOpen &&
                     <TaskModalDPR isTaskModalOpen={isTaskModalOpen} handleTaskModelOpen={handleTaskModelAddOpen} >
-                        <TaskFormDPR />
+                        <TaskFormDPR
+                            subcontractorsList={subcontractorsList}
+                            projectList={projectList}
+                            formLoading={formLoading}
+                        />
                     </TaskModalDPR>
+
                 }
 
                 <div className="dpr-tasks">

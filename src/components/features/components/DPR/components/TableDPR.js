@@ -14,8 +14,6 @@ import { Popover, Button } from "flowbite-react";
 
 
 const PopUpOverFilter = ({ children, className, title, setColumns, allColumns }) => {
-    console.log(allColumns, 'allColumns')
-
     const showHideTableColumns = (event, index) => {
         const columnId = event.target.name;
         setColumns(prevColumns =>

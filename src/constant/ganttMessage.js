@@ -3,3 +3,5 @@ export default {
     DATA_SUBMITTED: "Data Submitted Successfully",
     NO_FILES: "No files provided for upload"
 };
+
+
