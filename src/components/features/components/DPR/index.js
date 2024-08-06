@@ -117,19 +117,22 @@ const TaskDPReport = () => {
             let accountCriteria = ``
             const allContacts = await getApi("All_Contacts", accountCriteria);
 
+
             const subcontractorList = allContacts?.map((d) => ({
                 label: d?.Contact_Name?.display_value,
                 value: d?.ID,
             }));
+
+            setSubcontractorsList(
+                subcontractorList?.length > 0 ? subcontractorList : []
+            );
 
             const projectList = projects?.map((item) => ({
                 label: item?.Job_Name + " - " + item?.Project_ID,
                 value: item?.ID,
             }));
 
-            setSubcontractorsList(
-                subcontractorList?.length > 0 ? subcontractorList : []
-            );
+
 
             setProjectList(projectList?.length > 0 ? projectList : [])
         }

@@ -16,6 +16,9 @@ import { useForm, Controller, useFieldArray } from "react-hook-form"
 import validationMessages from "../../../../constant/formError";
 import { FaRegFilePdf } from "react-icons/fa";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { getApi } from "../../../../apis/estimatesheet";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { firebaseStorage } from "../../../../apis/firebase";
 
 const statuses = [
     {
@@ -318,7 +321,7 @@ const Workerdetails = ({ control, errors }) => {
 
 
 const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
-    const {  append, remove } = useFieldArray({
+    const { append, remove } = useFieldArray({
         control,
         name: 'tasks'
     });
@@ -518,6 +521,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
     const [progressMap, setProgressMap] = useState({});
     const progressBarColors = ['#479960', 'rgb(63, 165, 233)'];
     const dateInputRef = useRef(null);
+    const [project, setProject] = useState(null)
 
     const { control, handleSubmit, register, formState: { errors, tasks }, setValue, watch } = useForm({
         defaultValues: {
@@ -541,8 +545,10 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
         }
     });
 
-
     const watchedValues = watch();
+    const projectName = watch(`Project_Name`);
+
+    console.log(projectName, 'projectName')
 
     useEffect(() => {
         console.log('Form values changed:', watchedValues);
@@ -554,6 +560,30 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
             dateInputRef.current.value = today;
         }
     }, []);
+
+    const prevProjectName = useRef();
+
+    useEffect(() => {
+        if (prevProjectName.current !== projectName.value) {
+            prevProjectName.current = projectName.value;
+            onChangeProjectData()
+
+        }
+    }, [projectName]);
+
+
+    const onChangeProjectData = async () => {
+        try {
+            if (!project) {
+                const dprReport = await getApi("Daily_Log_Report", `Project==${projectName.value}`);
+
+                console.log(dprReport, 'dprReport')
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
     const onSubmit = (data) => {
         console.log(data, 'data')
@@ -680,7 +710,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                         <p className="font-bold text-lg text-black-0">Completed Task Details</p>
                                     </div>
                                     <hr className="bg-slate-200	h-px " />
-                                    <Completedtaskdetails register={register} control={control} errors={errors} setValue={setValue} watch={watch}/>
+                                    <Completedtaskdetails register={register} control={control} errors={errors} setValue={setValue} watch={watch} />
                                 </div>
 
                                 <div className="project_attachment">
