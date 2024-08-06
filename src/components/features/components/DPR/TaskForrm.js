@@ -317,12 +317,13 @@ const Workerdetails = ({ control, errors }) => {
 };
 
 
-const Completedtaskdetails = ({ control, errors, setValue }) => {
-    const { fields: tasks, append, remove } = useFieldArray({
+const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
+    const {  append, remove } = useFieldArray({
         control,
         name: 'tasks'
     });
 
+    const tasks = watch('tasks')
     const handleStatusChange = (index, status) => {
         console.log(status, 'status')
         setValue(`tasks.${index}.status`, status, { shouldValidate: true }); // Add shouldValidate if needed
@@ -449,11 +450,12 @@ const Completedtaskdetails = ({ control, errors, setValue }) => {
                                                 value={status.label}
                                                 checked={field.status === status.label}
                                                 onChange={() => handleStatusChange(index, status.label)}
-                                                className="sr-only"
+                                                className="opacity-0"
                                             />
                                             {status.label}
                                         </label>
                                     ))}
+
                                 </div>
                             </div>
                             {errors.tasks?.[index]?.status && (
@@ -565,7 +567,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                 name: file.name,
                 size: file.size,
                 src: URL.createObjectURL(file),
-                progress: 0 
+                progress: 0
             }));
             setFileInfo(prevFiles => [...prevFiles, ...newFiles]);
             newFiles.forEach(file => simulateUploadProgress(file));
@@ -678,7 +680,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                         <p className="font-bold text-lg text-black-0">Completed Task Details</p>
                                     </div>
                                     <hr className="bg-slate-200	h-px " />
-                                    <Completedtaskdetails register={register} control={control} errors={errors} setValue={setValue} />
+                                    <Completedtaskdetails register={register} control={control} errors={errors} setValue={setValue} watch={watch}/>
                                 </div>
 
                                 <div className="project_attachment">
@@ -736,9 +738,8 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                                                 completed={progressMap[file.name] || 0}
                                                                 className="rounded-xl h-fit w-9/12 mt-2 "
                                                                 barContainerClassName="bg-gray-200 rounded-xl"
-                                                                // completedClassName="barCompleted1"
                                                                 labelClassName="label"
-                                                                bgColor={progressBarColors[index % progressBarColors.length]} 
+                                                                bgColor={progressBarColors[index % progressBarColors.length]}
                                                                 height='7px'
                                                             />
                                                             {progressMap[file.name] === 100 && <img src={tick} alt='done' className='h-4 mt-1' />}
