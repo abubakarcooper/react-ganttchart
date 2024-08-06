@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useDropzone } from 'react-dropzone'
 import Logo from '../../../../images/worksheet/logo.svg'
 import Upload from '../../../../images/Featured.svg'
 import tick from '../../../../images/tick.png'
@@ -13,6 +14,8 @@ import { BsArrowReturnRight } from "react-icons/bs";
 import { FaPlus, FaTrash, FaMinus } from "react-icons/fa6";
 import { useForm, Controller, useFieldArray } from "react-hook-form"
 import validationMessages from "../../../../constant/formError";
+import { FaRegFilePdf } from "react-icons/fa";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 const statuses = [
     {
@@ -219,6 +222,7 @@ const Workerdetails = ({ control, errors }) => {
         control,
         name: 'workers'
     });
+
 
     return (
         <div className="space-y-4 mt-6">
@@ -508,7 +512,9 @@ const Completedtaskdetails = ({ control, errors, setValue }) => {
 
 
 const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectList, formLoading }) => {
-
+    const [fileInfo, setFileInfo] = useState([]);
+    const [progressMap, setProgressMap] = useState({});
+    const progressBarColors = ['#479960', 'rgb(63, 165, 233)'];
     const dateInputRef = useRef(null);
 
     const { control, handleSubmit, register, formState: { errors, tasks }, setValue, watch } = useForm({
@@ -551,6 +557,55 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
         console.log(data, 'data')
 
     }
+
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            const newFiles = acceptedFiles.map(file => ({
+                name: file.name,
+                size: file.size,
+                src: URL.createObjectURL(file),
+                progress: 0 
+            }));
+            setFileInfo(prevFiles => [...prevFiles, ...newFiles]);
+            newFiles.forEach(file => simulateUploadProgress(file));
+        },
+        accept: 'image/*,application/pdf',
+        multiple: true
+    });
+    const simulateUploadProgress = (file) => {
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            setProgressMap(prevMap => ({
+                ...prevMap,
+                [file.name]: progress
+            }));
+            if (progress >= 100) {
+                clearInterval(interval);
+            }
+        }, 500);
+    };
+    const handleDelete = (fileName) => {
+        setFileInfo(prevFiles => prevFiles.filter(file => file.name !== fileName));
+        setProgressMap(prevMap => {
+            const { [fileName]: _, ...rest } = prevMap;
+            return rest;
+        });
+    };
+    const getFileIcon = (file) => {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (ext === 'pdf') {
+            return <FaRegFilePdf className='w-24 h-14 text-[#F40F02]' />;
+        } else if (ext === 'doc' || ext === 'docx') {
+            return <IoDocumentTextOutline className='w-24 h-14 text-[#0484F6]' />;
+        } else if (['png', 'jpg', 'jpeg'].includes(ext)) {
+            return <img src={file.src} alt='Uploaded Img' className='w-24 h-14 object-contain' />;
+        } else {
+            return null;
+        }
+    };
+
 
     return (
         <>
@@ -645,127 +700,54 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
                                         </div>
 
                                         <div className="flex items-center justify-center w-full p-4 pt-2 md:p-5">
-                                            <label
-                                                for="dropzone-file"
-                                                class="flex flex-col items-center justify-center w-full py-10 border-2 border-gray-0 rounded-lg cursor-pointer "
+                                            <div
+                                                {...getRootProps({ className: 'flex flex-col items-center justify-center w-full py-10 border-2 border-gray-0 rounded-lg cursor-pointer' })}
                                             >
-                                                <div class="flex flex-col items-center justify-center py-2">
+                                                <input {...getInputProps({ id: 'dropzone-file' })} />
+                                                <div className="flex flex-col items-center justify-center py-2">
                                                     <img src={Upload} alt="Upload" />
-                                                    <p class="mb-2 text-gray-500 dark:text-gray-400 text-lg">
-                                                        <span class=" text-sm sm:text-lg font-semibold text-primary-0">
+                                                    <p className="mb-2 text-gray-500 dark:text-gray-400 text-lg">
+                                                        <span className="text-sm sm:text-lg font-semibold text-primary-0">
                                                             Click to upload
                                                         </span>{" "}
                                                         or drag and drop
                                                     </p>
-                                                    <p class="text-md text-gray-500 dark:text-gray-400">
+                                                    <p className="text-md text-gray-500 dark:text-gray-400">
                                                         PDF, PNG, JPG
                                                     </p>
                                                 </div>
-                                                <input id="dropzone-file" type="file" class="hidden" />
-                                            </label>
+                                            </div>
                                         </div>
 
                                         <div className=''>
-                                            <div className='mx-5 p-4  sm:flex border border-gray-0 rounded-xl mb-3'>
-                                                <div className='w-1/2 flex gap-4'>
-                                                    <img src={img1} alt='Img' className='' />
-                                                    <span>
-                                                        <p className='sm:text-lg text-sm text-gray-2 font-bold'>Fidelity Collections.pdf</p>
-                                                        <p className='sm:text-md  text-xs text-gray-1 font-semibold'>200 KB</p>
-                                                    </span>
+                                            {fileInfo.map((file, index) => (
+                                                <div key={index} className='mx-5 p-4 sm:flex border border-gray-0 rounded-xl mb-3'>
+                                                    <div className='w-1/2 flex items-center gap-4'>
+                                                        {getFileIcon(file)}
+                                                        <span>
+                                                            <p className='sm:text-lg text-sm text-gray-2 font-bold'>{file.name}</p>
+                                                            <p className='sm:text-md text-xs text-gray-1 font-semibold'>{Math.round(file.size / 1024)} KB</p>
+                                                        </span>
+                                                    </div>
+                                                    <div className='sm:w-1/2 mt-3'>
+                                                        <span className='flex gap-2 items-center'>
+                                                            <p className='sm:text-md text-sm font-semibold sm:font-bold'>{progressMap[file.name] || 0}%</p>
+                                                            <ProgressBar
+                                                                completed={progressMap[file.name] || 0}
+                                                                className="rounded-xl h-fit w-9/12 mt-2 "
+                                                                barContainerClassName="bg-gray-200 rounded-xl"
+                                                                // completedClassName="barCompleted1"
+                                                                labelClassName="label"
+                                                                bgColor={progressBarColors[index % progressBarColors.length]} 
+                                                                height='7px'
+                                                            />
+                                                            {progressMap[file.name] === 100 && <img src={tick} alt='done' className='h-4 mt-1' />}
+                                                            <img src={del} onClick={() => handleDelete(file.name)} alt='delete' className='ml-4 h-4 mt-1 cursor-pointer' />
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <div className='sm:w-1/2 mt-3'>
+                                            ))}
 
-                                                    <span className='flex gap-2'>
-                                                        <p className='sm:text-md text-sm font-semibold sm:font-bold'>100%</p>
-                                                        <ProgressBar
-                                                            completed={80}
-                                                            className="rounded-xl h-fit w-9/12 mt-2 "
-                                                            barContainerClassName="bg-gray-200 rounded-xl"
-                                                            completedClassName="barCompleted1"
-                                                            labelClassName="label"
-                                                        />
-                                                        <img src={tick} alt='done' className='h-4 mt-1' />
-                                                        <img src={del} alt='delete' className='ml-4 h-4 mt-1' />
-                                                    </span>
-
-                                                </div>
-                                            </div>
-                                            <div className='mx-5 p-4  sm:flex border border-gray-0 rounded-xl mb-3'>
-                                                <div className='w-1/2 flex gap-4'>
-                                                    <img src={img2} alt='Img' className='' />
-                                                    <span>
-                                                        <p className='sm:text-lg text-sm text-gray-2 font-bold'>Fidelity Collections.pdf</p>
-                                                        <p className='sm:text-md  text-xs text-gray-1 font-semibold'>200 KB</p>
-                                                    </span>
-                                                </div>
-                                                <div className='sm:w-1/2 mt-3'>
-
-                                                    <span className='flex gap-2'>
-                                                        <p className='sm:text-md text-sm font-semibold sm:font-bold'>70%</p>
-                                                        <ProgressBar
-                                                            completed={70}
-                                                            className="rounded-xl h-fit w-9/12 mt-2 "
-                                                            barContainerClassName="bg-gray-200 rounded-xl"
-                                                            completedClassName="barCompleted2"
-                                                            labelClassName="label"
-                                                        />
-                                                        <img src={tick} alt='done' className='h-4 mt-1 hidden' />
-                                                        <img src={del} alt='delete' className='ml-12 h-4 mt-1' />
-                                                    </span>
-
-                                                </div>
-                                            </div>
-                                            <div className='mx-5 p-4  sm:flex border border-gray-0 rounded-xl mb-3'>
-                                                <div className='w-1/2 flex gap-4'>
-                                                    <img src={img3} alt='Img' className='' />
-                                                    <span>
-                                                        <p className='sm:text-lg text-sm text-gray-2 font-bold'>Fidelity Collections.pdf</p>
-                                                        <p className='sm:text-md  text-xs text-gray-1 font-semibold'>200 KB</p>
-                                                    </span>
-                                                </div>
-                                                <div className='sm:w-1/2 mt-3'>
-
-                                                    <span className='flex gap-2'>
-                                                        <p className='sm:text-md text-sm font-semibold sm:font-bold'>100%</p>
-                                                        <ProgressBar
-                                                            completed={80}
-                                                            className="rounded-xl h-fit w-9/12 mt-2 "
-                                                            barContainerClassName="bg-gray-200 rounded-xl"
-                                                            completedClassName="barCompleted1"
-                                                            labelClassName="label"
-                                                        />
-                                                        <img src={tick} alt='done' className='h-4 mt-1' />
-                                                        <img src={del} alt='delete' className='ml-4 h-4 mt-1' />
-                                                    </span>
-
-                                                </div>
-                                            </div>
-                                            <div className='mx-5 p-4  sm:flex border border-gray-0 rounded-xl mb-3'>
-                                                <div className='w-1/2 flex gap-4'>
-                                                    <img src={img4} alt='Img' className='' />
-                                                    <span>
-                                                        <p className='sm:text-lg text-sm text-gray-2 font-bold'>Fidelity Collections.pdf</p>
-                                                        <p className='sm:text-md  text-xs text-gray-1 font-semibold'>200 KB</p>
-                                                    </span>
-                                                </div>
-                                                <div className='sm:w-1/2 mt-3'>
-
-                                                    <span className='flex gap-2'>
-                                                        <p className='sm:text-md text-sm font-semibold sm:font-bold'>50%</p>
-                                                        <ProgressBar
-                                                            completed={50}
-                                                            className="rounded-xl h-fit w-9/12 mt-2 "
-                                                            barContainerClassName="bg-gray-200 rounded-xl"
-                                                            completedClassName="barCompleted2"
-                                                            labelClassName="label"
-                                                        />
-                                                        <img src={tick} alt='done' className='h-4 mt-1 hidden' />
-                                                        <img src={del} alt='delete' className='ml-12 h-4 mt-1' />
-                                                    </span>
-
-                                                </div>
-                                            </div>
                                             {/* <div className='flex justify-end mr-5'>
                                 <button className='bg-primary-0 py-2 px-14  text-white-0 my-4 text-base w-[152px] rounded-md'>Done</button>
                             </div> */}
