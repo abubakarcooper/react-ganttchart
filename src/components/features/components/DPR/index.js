@@ -98,6 +98,8 @@ const TaskDPReport = () => {
     const [subcontractorsList, setSubcontractorsList] = useState([]);
     const [projectList, setProjectList] = useState([]);
     const [formLoading, setFormLoading] = useState(true);
+    const [dprReports, setDprReports] = useState([])
+    const [tableLoader, setTableLoader] = useState(true);
 
     useEffect(() => {
         getDPRDetail()
@@ -114,28 +116,26 @@ const TaskDPReport = () => {
     const getDPRDetail = async (active = true) => {
         try {
             const projects = await getApi("All_Projects", `Active==${active}`)
-            // const allContacts = await getApi("All_Contacts", `Company_Name1!=""`);
-
-            // const subcontractorList = allContacts?.map((d) => ({
-            //     label: d?.Contact_Name?.display_value,
-            //     value: d?.ID,
-            // }));
+            const dprReports = await getApi("All_Daily_Progress");
 
             const projectList = projects?.map((item) => ({
                 label: item?.Job_Name + " - " + item?.Project_ID,
                 value: item?.ID,
             }));
 
-            // setSubcontractorsList(
-            //     subcontractorList?.length > 0 ? subcontractorList : []
-            // );
-            setProjectList(projectList?.length > 0 ? projectList : [])
+            setProjectList(projectList?.length ? projectList : [])
+            setDprReports(dprReports?.length ? dprReports.map(project => ({
+                ...project,
+                Project: project?.Project_Name?.display_value
+            })) : [])
+
+            setTableLoader(false)
         }
         catch (error) {
             console.log(error, 'error')
+            setTableLoader(false)
         }
     }
-
 
 
     return (
@@ -171,7 +171,8 @@ const TaskDPReport = () => {
                         </button>
                     </div>
 
-                    <TableDPR tasks={tasks} isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} />
+                    <TableDPR tableLoader={tableLoader} tasks={dprReports} isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} />
+
                 </div>
 
             </div>

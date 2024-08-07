@@ -70,11 +70,11 @@ export const documentsColumn =
 
 export const dprTableColumns =
     [
-        { id: 'date', label: 'Date', isActive: true },
-        { id: 'projectName', label: 'Project Name', isActive: true },
-        { id: 'taskName', label: 'Task Name', isActive: true },
-        { id: 'supervisor', label: 'Supervisor', isActive: true },
-        { id: 'reference', label: 'Reference', isActive: true },
-        { id: 'completion', label: 'Completion', isActive: true },
+        { id: 'Issue_Date', label: 'Date', isActive: true },
+        { id: 'Project', label: 'Project Name', isActive: true },
+        // { id: 'taskName', label: 'Task Name', isActive: true },
+        { id: 'Project_Supervisor', label: 'Supervisor', isActive: true },
+        { id: 'Reference', label: 'Reference', isActive: true },
+        // { id: 'completion', label: 'Completion', isActive: true },
         // { id: 'action', label: 'Action', isActive: true }
     ];

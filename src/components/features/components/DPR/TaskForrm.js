@@ -19,7 +19,7 @@ import { firebaseStorage } from "../../../../apis/firebase";
 import { toast } from "react-toastify";
 import ganttMessage from "../../../../constant/ganttMessage";
 import moment from "moment/moment";
-
+import BeatLoader from "react-spinners/BeatLoader";
 const statuses = [
     {
         label: "Completed",
@@ -34,6 +34,13 @@ const statuses = [
     { label: "Paused", color: "bg-[#EA4E4E1A]", textColor: "text-[#EA4E4E]" },
     { label: "Pending", color: "bg-[#821DBD1A]", textColor: "text-[#821DBD]" },
 ];
+
+const override = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+};
+
 
 // supervisorList={supervisorList}
 const TaskDetails = ({ projectList, supervisorList, errors, register, control, supervisorSearchLoading }) => {
@@ -521,6 +528,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
 };
 
 
+
 const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) => {
     const progressBarColors = ['#479960', 'rgb(63, 165, 233)'];
     const dateInputRef = useRef(null);
@@ -538,9 +546,11 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
     const [filesToUpload, setFilesToUpload] = useState([]);
     const [progressMap, setProgressMap] = useState({});
     const [fileInfo, setFileInfo] = useState([]);
+    const [loading, setLoading] = useState(false);
 
 
-    const { control, handleSubmit, register, formState: { errors, tasks }, setValue, watch } = useForm({
+
+    const { control, handleSubmit, register, formState: { errors, tasks }, setValue, watch, reset } = useForm({
         defaultValues: {
             workers: [{ workerName: '', designation: '' }], // Initial values
             tasks: [{
@@ -586,7 +596,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
     }, []);
 
     useEffect(() => {
-        if (prevProjectName.current !== projectName.value) {
+        if (prevProjectName.current !== projectName.value && projectName.value) {
             prevProjectName.current = projectName.value;
             getAllSupervisors()
             getAllProjectTasks()
@@ -831,6 +841,18 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
         }
     };
 
+    const addFilesDataReq = async (payload) => {
+        try {
+            const data = await addRecord(payload,
+                "Progress_Attachements_Report",
+                "Progress_Attachements");
+            return data;
+        } catch (error) {
+            console.log("error", error);
+            toast.error(ganttMessage.WENT_WRONG);
+        }
+    };
+
     const addTaskDataReq = async (payload) => {
         try {
             const data = await addRecord(payload,
@@ -843,70 +865,85 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
         }
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (formData) => {
+
+        try {
+            setLoading(true)
+            const projectDetail = {
+                Project_Name: formData?.Project_Name?.value,
+                Project_Supervisor: "1556703000046292323" || formData?.Project_Supervisor?.value,
+                Description: formData?.description
+            }
+
+            const {
+                Subject_field,
+                Issue_Date,
+                Reference,
+                Temperature_and_Weather,
+                description,
+            } = formData
+
+
+            const obj1 = {
+                Subject_field,
+                Issue_Date: moment(Issue_Date).format('MM-DD-YYYY'),
+                Reference,
+                Temperature_and_Weather,
+                description,
+                ...projectDetail,
+            }
+
+
+            console.log(formData, 'data')
+            console.log(fileInfo, 'fileInfo')
 
 
 
-        const projectDetail = {
-            Project_Name: data?.Project_Name?.value,
-            Project_Supervisor: "1556703000046292323" || data?.Project_Supervisor?.value,
-            Description: data?.description
+            const dprFormData = await addRecord(obj1,
+                "All_Daily_Progress",
+                "Daily_Progress_Form");
+
+
+            let urls = ''
+            if (fileInfo?.length) {
+                urls = await uploadFilesToFirebase(fileInfo);
+                console.log(urls, 'urls')
+                const urlsPromises = urls.map(async (url) => {
+                    await addFilesDataReq({ Upload_Photo_URL: url, Daily_Progress_Form: dprFormData.ID })
+                });
+
+                await Promise.all(urlsPromises);
+            }
+
+            const workerPromises = formData?.workers.map(async (object) => {
+                await addWorkerDataReq({ Worker_Name: object.workerName.value, Designation: '', Daily_Progress_Form: dprFormData.ID })
+            });
+
+            await Promise.all(workerPromises);
+
+            const taskPromises = formData?.tasks.map(async (object) => {
+                await addTaskDataReq({
+                    Task_Name: object.taskName.value,
+                    Equipment_Used: object.equipmentUsed,
+                    Any_Report_incident: object.reportIncident,
+                    Completion_Percentage: object.completionPercentage,
+                    Task_Status: object.status,
+                    Daily_Progress_Form: dprFormData.ID
+                })
+            });
+
+            await Promise.all(taskPromises);
+
+
+            setLoading(false)
+            toast.success(ganttMessage.DATA_SUBMITTED)
+            // reset()
+            // setFileInfo([]);
         }
-
-        const {
-            Subject_field,
-            Issue_Date,
-            Reference,
-            Temperature_and_Weather,
-            description,
-        } = data
-
-
-        const obj1 = {
-            Subject_field,
-            Issue_Date: moment(Issue_Date).format('MM-DD-YYYY'),
-            Reference,
-            Temperature_and_Weather,
-            description,
-            ...projectDetail,
+        catch (error) {
+            setLoading(false)
+            toast.error(ganttMessage.WENT_WRONG)
         }
-
-        const taskDetails = {
-            Task_Name: '',
-            Equipment_Used: '',
-            Any_Report_incident: '',
-            Completion_Percentage: '',
-            Task_Status: ''
-        }
-
-        console.log(data, 'data')
-        console.log(fileInfo, 'fileInfo')
-
-        let urls = ''
-        if (fileInfo?.length) {
-            urls = await uploadFilesToFirebase(fileInfo);
-        }
-
-
-        // const workerPromises = data?.workers.map(async (object) => {
-        //     await addWorkerDataReq({ Worker_Name: object.workerName.value, Designation: '' })
-        // });
-        // const workerResults = await Promise.all(workerPromises);
-        // obj1.Worker_Details = ["1556703000055898212"]
-
-
-        // const taskPromises = data?.tasks.map(async (object) => {
-        //     await addTaskDataReq({
-        //         Task_Name: object.taskName.value,
-        //         Equipment_Used: object.equipmentUsed,
-        //         Any_Report_incident: object.reportIncident,
-        //         Completion_Percentage: object.completionPercentage,
-        //         Task_Status: object.status
-        //     })
-        // });
-        // const tasksResults = await Promise.all(taskPromises);
-        // console.log(tasksResults, 'tasksResults')
-
 
     }
 
@@ -1085,8 +1122,16 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
                                 Cancel
                             </button>
                             <button
-                                className="px-8 sm:px-14 py-2 text-sm font-semibold text-white-2 bg-primary-0 rounded-lg w-[152px]">
-                                Save
+                                disabled={loading}
+                                className="flex items-center gap-2 px-8 sm:px-14 py-2 text-sm font-semibold text-white-2 bg-primary-0 rounded-lg w-[152px]">
+                                <span> Save</span>
+                                {
+                                    loading && <BeatLoader
+                                        color={'#fff'}
+                                        size={10}
+                                    />
+                                }
+
                             </button>
                         </div>
                     </form>
