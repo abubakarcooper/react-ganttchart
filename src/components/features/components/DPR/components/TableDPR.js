@@ -179,7 +179,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen, tableLoader }) 
                                 </tr>
                             ) : projectTasks.length > 0 ? (
                                 projectTasks.map((task, index) => (
-                                    <tr key={index} className={`odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 ${(projectTasks.length - 1) != index && 'border-b '} dark:border-gray-700 text-black-2 text-sm`}>
+                                    <tr key={index} className={`odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 ${(projectTasks.length - 1) != index & 'border-b '} dark:border-gray-700 text-black-2 text-sm`}>
                                         {columns.map((column) =>
                                             column.isActive ? (
                                                 <td key={column.id} className={`px-6 py-4 ${column.width || 'w-auto'}`}>

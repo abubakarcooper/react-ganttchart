@@ -73,7 +73,7 @@ export const dprTableColumns =
         { id: 'Issue_Date', label: 'Date', isActive: true },
         { id: 'Project', label: 'Project Name', isActive: true },
         // { id: 'taskName', label: 'Task Name', isActive: true },
-        { id: 'Project_Supervisor', label: 'Supervisor', isActive: true },
+        { id: 'Supervisor', label: 'Supervisor', isActive: true },
         { id: 'Reference', label: 'Reference', isActive: true },
         // { id: 'completion', label: 'Completion', isActive: true },
         // { id: 'action', label: 'Action', isActive: true }

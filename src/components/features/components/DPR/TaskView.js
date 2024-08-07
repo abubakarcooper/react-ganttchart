@@ -77,7 +77,7 @@
 
 
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import ProjectDetail from './components/ProjectDetail'
 import ProjectDescription from './components/ProjectDescription'
@@ -87,19 +87,21 @@ import ProgressAttachment from './components/ProgressAttachment'
 import Documents from './components/Documents'
 
 
-const ParentPage = () => {
+const TaskViewModal = ({ openTask }) => {
+
+
     return (
         <>
             <div className='w-1200px m-auto'>
-                <ProjectDetail />
-                <ProjectDescription />
-                <WorkerDetail />
-                <TaskDetail />
-                <ProgressAttachment />
-                <Documents />
+                <ProjectDetail openTask={openTask} />
+                <ProjectDescription openTask={openTask} />
+                <WorkerDetail openTask={openTask} />
+                <TaskDetail openTask={openTask} />
+                <ProgressAttachment openTask={openTask} />
+                <Documents openTask={openTask} />
             </div>
         </>
     )
 }
 
-export default ParentPage
+export default TaskViewModal
