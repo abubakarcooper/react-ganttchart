@@ -7,7 +7,7 @@ import ganttMessage from "../../../../constant/ganttMessage";
 
 
 const ProjectStartModal = ({
-     singleStartDateModalOpen,
+    singleStartDateModalOpen,
     onSingleStartDateeModalClose,
     date,
     deliverableId,
@@ -39,7 +39,7 @@ const ProjectStartModal = ({
         //         getEstimateDetailViewReport();
         //         onSingleStartDateeModalClose();
         //     } catch (err) {
-        //         toast.error(err?.message || Messages.WENT_WRONG);
+        //        toast.error(err?.message || Messages.WENT_WRONG);
         //     } finally {
         //         setLoading(false);
         //     }

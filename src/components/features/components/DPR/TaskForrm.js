@@ -450,7 +450,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch }) => {
                                                 value={status.label}
                                                 checked={field.status === status.label}
                                                 onChange={() => handleStatusChange(index, status.label)}
-                                                className="opacity-0"
+                                                className="opacity-0 ml-[-17px]"
                                             />
                                             {status.label}
                                         </label>
@@ -554,10 +554,9 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, subcontractorsList, projectLis
             dateInputRef.current.value = today;
         }
     }, []);
-
+    
     const onSubmit = (data) => {
         console.log(data, 'data')
-
     }
 
 
