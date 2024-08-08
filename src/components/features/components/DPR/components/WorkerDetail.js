@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Heading from './Heading'
 import BoyImg from '../../../../../images/dpr/BoyAvatar.svg'
 import GirlImg from '../../../../../images/dpr/GirlAvatar.svg'
@@ -11,18 +11,19 @@ const data = [
     { id: 5, img: BoyImg, name: 'John Alex', profession: 'Carpenter' },
 ];
 
-const WorkerDetail = () => {
+const WorkerDetail = ({ openTask }) => {
+    console.log(openTask, 'openTaskopenTaskopenTaskopenTaskopenTaskopenTaskopenTask')
     return (
         <div className='w-full m-auto'>
             <Heading heading='Worker Details' />
-            <div className='flex flex-wrap gap-3 my-4'>
-                {data.map(({ id, img, name, profession }) => (
-                    <div key={id} className='shadow rounded-xl flex items-center gap-2 w-[350px] md:w-[32.3%] p-4'>
-                        <img src={img} alt='img' className='w-28 h-28' />
+            <div className='flex flex-wrap justify-center lg:justify-start gap-2 my-4'>
+                {openTask?.workers.map(({ id, name }, i) => (
+                    <div key={id} className='shadow rounded-xl flex items-center justify-center lg:justify-start gap-3 w-[32.5%] p-4'>
+                        <img src={BoyImg} alt='img' className='w-28 h-28' />
                         <div>
-                            <h1 className='text-primary-0 text-4xl font-medium mb-2'>{id}.</h1>
+                            <h1 className='text-primary-0 text-4xl font-medium mb-2'>{i + 1}</h1>
                             <h1 className='text-black-2 text-2xl font-semibold'>{name}</h1>
-                            <p className='text-gray-2 text-base font-semibold'>{profession}</p>
+                            <p className='text-gray-2 text-base font-semibold'>{'Supervisor'}</p>
                         </div>
                     </div>
                 ))}

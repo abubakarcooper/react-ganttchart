@@ -527,9 +527,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
     );
 };
 
-
-
-const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) => {
+const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getDprTableData, handleTaskModelOpen }) => {
     const progressBarColors = ['#479960', 'rgb(63, 165, 233)'];
     const dateInputRef = useRef(null);
     const [project, setProject] = useState(null)
@@ -714,6 +712,8 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles) => {
+            console.log(acceptedFiles, 'acceptedFiles')
+
             const newFiles = acceptedFiles.map(file => ({
                 name: file.name,
                 size: file.size,
@@ -721,6 +721,12 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
                 progress: 0
             }));
             setFileInfo(prevFiles => [...prevFiles, ...newFiles]);
+            setFilesToUpload(prev => {
+                return [
+                    ...prev,
+                    ...acceptedFiles
+                ]
+            })
             // newFiles.forEach(file => simulateUploadProgress(file));
         },
         accept: {
@@ -738,8 +744,11 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
             return toast.error(ganttMessage.NO_FILES);
         }
 
+
         const uploadPromises = files.map(file => {
-            const storageRef = ref(firebaseStorage, `${file.name}`);
+            const storageRef = ref(firebaseStorage, `DPR/${file.name}`);
+
+
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             return new Promise((resolve, reject) => {
@@ -748,7 +757,6 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
                     (snapshot) => {
                         console.log(snapshot.bytesTransferred, 'snapshot.bytesTransferred ');
                         console.log(snapshot.totalBytes, 'snapshot.totalBytes ');
-
                         const progress = ((snapshot.bytesTransferred || 0) / (snapshot.totalBytes || 0)) * 100;
                         // console.log(progress, 'progress')
                         // setProgressMap(prevMap => ({
@@ -802,6 +810,8 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
 
     const handleDelete = (fileName) => {
         setFileInfo(prevFiles => prevFiles.filter(file => file.name !== fileName));
+        setFilesToUpload(prevFiles => prevFiles.filter(file => file.path !== fileName));
+
         setProgressMap(prevMap => {
             const { [fileName]: _, ...rest } = prevMap;
             return rest;
@@ -810,7 +820,6 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
 
     const getFileIcon = (file) => {
         const ext = file.name.split('.').pop().toLowerCase();
-        console.log(ext, 'ext.ext')
         if (ext === 'pdf') {
             return <FaRegFilePdf className='w-24 h-14 text-[#F40F02]' />;
         }
@@ -868,6 +877,8 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
     const onSubmit = async (formData) => {
 
         try {
+
+            console.log(filesToUpload, 'filesToUpload Report/Incident')
             setLoading(true)
             const projectDetail = {
                 Project_Name: formData?.Project_Name?.value,
@@ -893,12 +904,6 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
                 ...projectDetail,
             }
 
-
-            console.log(formData, 'data')
-            console.log(fileInfo, 'fileInfo')
-
-
-
             const dprFormData = await addRecord(obj1,
                 "All_Daily_Progress",
                 "Daily_Progress_Form");
@@ -906,8 +911,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
 
             let urls = ''
             if (fileInfo?.length) {
-                urls = await uploadFilesToFirebase(fileInfo);
-                console.log(urls, 'urls')
+                urls = await uploadFilesToFirebase(filesToUpload);
                 const urlsPromises = urls.map(async (url) => {
                     await addFilesDataReq({ Upload_Photo_URL: url, Daily_Progress_Form: dprFormData.ID })
                 });
@@ -934,11 +938,13 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
 
             await Promise.all(taskPromises);
 
-
             setLoading(false)
             toast.success(ganttMessage.DATA_SUBMITTED)
-            // reset()
-            // setFileInfo([]);
+            getDprTableData()
+            handleTaskModelOpen()
+            reset()
+            setFileInfo([]);
+            setFilesToUpload([]);
         }
         catch (error) {
             setLoading(false)
@@ -947,7 +953,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
 
     }
 
-    console.log(progressMap, 'progressMap.progressMap')
+    console.log(filesToUpload, 'filesToUpload.filesToUpload')
 
     return (
         <>
@@ -1118,7 +1124,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
                         </div>
                         <div className="flex justify-end gap-2 mt-4">
                             <button
-                                onClick={() => setIsEditOpen(!isEditOpen)}
+                                onClick={handleTaskModelOpen}
                                 className="px-8 sm:px-14 py-2 text-sm font-semibold text-primary-0 bg-gray-100 rounded-lg border border-primary-0 w-[152px]">
                                 Cancel
                             </button>

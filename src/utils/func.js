@@ -54,3 +54,25 @@ export function appendQueryString(url, key, value) {
   const newUrl = hasQueryString ? `${url}&${queryString}` : `${url}?${queryString}`;
   return newUrl;
 }
+
+
+export function getFileNameFromUrl(url) {
+  try {
+    const parsedUrl = new URL(url);
+
+    // Extract the pathname and remove any URL encoding
+    const path = parsedUrl.pathname;
+    const fileName = decodeURIComponent(path.substring(path.lastIndexOf('/') + 1));
+
+    // Check if fileName is valid and not empty
+    if (fileName) {
+      return fileName;
+    } else {
+      throw new Error("File name is empty.");
+    }
+  } catch (error) {
+    // Return default text if there's an error
+    console.error("Error extracting file name:", error);
+    return "File Name Here";
+  }
+}

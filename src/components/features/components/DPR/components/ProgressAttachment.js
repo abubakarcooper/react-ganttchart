@@ -9,23 +9,30 @@ console.log(openTask.images,'openTask.images openTask.images')
     return (
         <div className='w-97% xl:w-1200px m-auto my-7 flex flex-col gap-7'>
             <Heading heading='Progress Attachments' />
-            <div>
-                <h1 className='text-2xl font-medium text-primeryColor mb-2'>Images:</h1>
-                <div className='flex  flex-wrap justify-between gap-2'>
+            {openTask.images.length >= 1 &&
+                <div>
+                    <h1 className='text-2xl font-medium text-primeryColor mb-2'>Images:</h1>
+                    <div className='flex  flex-wrap justify-between gap-2'>
+                        {
+                            openTask.images.map(item => <div className='w-[49.5%] border rounded-xl flex items-center'>
+                                <img src={item} alt='img' className='w-full object-contain  rounded' />
+                            </div>)
+                        }
+                    </div>
+                </div>
+            }
+
+            {openTask.videos.length >= 1 &&
+                <div>
+                    <h1 className='text-2xl font-medium text-primeryColor mb-2'>Videos</h1>
                     {
-                        openTask.images.map(item => <div className='w-[49.5%] '>
-                            <img src={item} alt='img' className='w-full h-96 object-cover  rounded' />
+                        openTask.videos.map(item => <div className='mb-4'>
+                            <video src={item} controls className='w-full h-full'></video>
+                            {/* <iframe className="w-full" height="500px" src={item} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> */}
                         </div>)
                     }
                 </div>
-            </div>
-
-            <div>
-                <h1 className='text-2xl font-medium text-primeryColor mb-2'>Videos</h1>
-                <div>
-                    <iframe className="w-full" height="500px" src="https://www.youtube.com/embed/IjlYXtI2-GU?si=74PJGd3pdaGW0tIK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                </div>
-            </div>
+            }
         </div>
     )
 }
