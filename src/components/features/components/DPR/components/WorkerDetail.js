@@ -17,7 +17,7 @@ const WorkerDetail = () => {
             <Heading heading='Worker Details' />
             <div className='flex flex-wrap gap-3 my-4'>
                 {data.map(({ id, img, name, profession }) => (
-                    <div key={id} className='shadow rounded-xl flex items-center gap-3 w-[350px] lg:w-[32.5%] p-4'>
+                    <div key={id} className='shadow rounded-xl flex items-center gap-2 w-[350px] md:w-[32.3%] p-4'>
                         <img src={img} alt='img' className='w-28 h-28' />
                         <div>
                             <h1 className='text-primary-0 text-4xl font-medium mb-2'>{id}.</h1>
