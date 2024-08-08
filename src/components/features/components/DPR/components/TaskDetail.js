@@ -18,7 +18,6 @@ const TaskDetail = ({ openTask }) => {
         setTasks(completedTasks)
     }
 
-    console.log(tasks, 'all view tasks.')
     return (
         <div className='w-97% xl:w-1200px m-auto flex flex-col gap-3'>
             <Heading heading='Task Details' />

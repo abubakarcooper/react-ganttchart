@@ -145,6 +145,7 @@ const TaskDPReport = () => {
                 const pdfs = [];
                 const videos = [];
                 const images = [];
+                let workers = []
 
                 if (project.Progress_Attachements) {
                     project.Progress_Attachements.forEach(file1 => {
@@ -162,6 +163,14 @@ const TaskDPReport = () => {
                         }
                     });
                 }
+                if (openTask?.Worker_Details?.length) {
+                    workers = openTask?.Worker_Details.map(item => {
+                        const [name, id] = item?.display_value.split(' ')
+                        return {
+                            name, id
+                        }
+                    })
+                }
 
                 return {
                     ...project,
@@ -169,7 +178,8 @@ const TaskDPReport = () => {
                     Supervisor: project?.Project_Supervisor?.display_value,
                     pdfs,
                     images,
-                    videos
+                    videos,
+                    workers
                 };
             }) : []);
 
@@ -202,6 +212,8 @@ const TaskDPReport = () => {
                             // setSubcontractorsList={setSubcontractorsList}
                             projectList={projectList}
                             formLoading={formLoading}
+                            getDprTableData={getDprTableData}
+                            handleTaskModelOpen={handleTaskModelAddOpen}
                         />
                     </TaskModalDPR>
                 }
