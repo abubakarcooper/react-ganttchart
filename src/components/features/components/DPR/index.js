@@ -149,11 +149,8 @@ const TaskDPReport = () => {
 
                 if (project.Progress_Attachements) {
                     project.Progress_Attachements.forEach(file1 => {
-                        const fileUrl = file1.display_value.split('##$$')[0];
+                        const fileUrl = file1.display_value.split(' ##$$ ')[0];
                         const ext = getFileExtension(fileUrl);
-                        console.log(fileUrl, 'file.filefile');
-                        console.log(ext, 'file.extension');
-
                         if (ext === 'pdf') {
                             pdfs.push(fileUrl);
                         } else if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) {
@@ -189,9 +186,6 @@ const TaskDPReport = () => {
             setTableLoader(false);
         }
     };
-
-
-    console.log(dprReports, 'dprReports')
 
     return (
         <>
