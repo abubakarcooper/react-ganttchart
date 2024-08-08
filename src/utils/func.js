@@ -1,3 +1,16 @@
+import { v4 as uuidv4 } from 'uuid';
+
+export function generateUniqueReference() {
+  // Generate a UUID
+  const uuid = uuidv4();
+  // Extract numeric digits from the UUID
+  const digits = uuid.replace(/\D/g, ''); // Remove non-digit characters
+  // Use the first 6 digits of the numeric part
+  const reference = digits.substring(0, 6);
+  // Ensure the result is exactly 6 digits, padding with zeros if necessary
+  return '#' + reference.padStart(6, '0');
+}
+
 export const formatAmount = (amount) => {
   let [integerPart, decimalPart] = amount.toString().split(".");
 

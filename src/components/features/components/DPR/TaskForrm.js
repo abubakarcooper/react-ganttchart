@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import ganttMessage from "../../../../constant/ganttMessage";
 import moment from "moment/moment";
 import BeatLoader from "react-spinners/BeatLoader";
+import { generateUniqueReference } from "../../../../utils/func";
 const statuses = [
     {
         label: "Completed",
@@ -195,7 +196,7 @@ const TaskDetails = ({ projectList, supervisorList, errors, register, control, s
                         type="number"
                         step="any"
                         {...register("Temperature_and_Weather", {
-                            required: "Temperature and Weather is required",
+                            // required: "Temperature and Weather is required",
                             maxLength: {
                                 value: 3,
                                 message: "Temperature maximum limit 3 digit long"
@@ -232,7 +233,7 @@ const TaskDetails = ({ projectList, supervisorList, errors, register, control, s
 };
 
 
-const Workerdetails = ({ control, errors, subcontractorList, subcontractorsSearchLoading }) => {
+const Workerdetails = ({ control, errors, subcontractorList, subcontractorsSearchLoading, getSearchAllContacts }) => {
     const { fields: workers, append, remove } = useFieldArray({
         control,
         name: 'workers'
@@ -263,6 +264,10 @@ const Workerdetails = ({ control, errors, subcontractorList, subcontractorsSearc
                                         control: (base) => ({ ...base, background: "#ffff", transition: "none", fontSize: "12px" })
                                     }}
                                     options={subcontractorList}
+                                    onInputChange={(value) => {
+                                        getSearchAllContacts(value)
+                                    }}
+
                                 />
                             )}
                         />
@@ -289,7 +294,7 @@ const Workerdetails = ({ control, errors, subcontractorList, subcontractorsSearc
                         <Controller
                             name={`workers[${index}].designation`}
                             control={control}
-                            rules={{ required: "Designation is required" }}
+                            // rules={{ required: "Designation is required" }}
                             render={({ field }) => (
                                 <Select
                                     {...field}
@@ -384,7 +389,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                             <label className="text-black-2 text-sm font-semibold">Equipment Used</label>
                             <Controller
                                 name={`tasks[${index}].equipmentUsed`}
-                                rules={{ required: "Equipment Used is required" }}
+                                // rules={{ required: "Equipment Used is required" }}
                                 control={control}
                                 render={({ field }) => (
                                     <input
@@ -413,7 +418,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                                     {...field}
                                     type="text"
                                     placeholder="--------------------"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                    className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                 />
                             )}
                         />
@@ -423,19 +428,25 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                             </p>
                         )} */}
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mt-2">
                         <div>
                             <label className="text-black-2 text-sm font-semibold">Completion Percentage</label>
                             <Controller
                                 name={`tasks[${index}].completionPercentage`}
                                 control={control}
-                                rules={{ required: "Completion Percentage is required" }}
+                                // rules={{
+                                //     min: { value: 1, message: "Value must be at least 1" },
+                                //     max: { value: 100, message: "Value must be at most 100" }
+                                // }}
                                 render={({ field }) => (
                                     <input
                                         {...field}
-                                        type="text"
+                                        type="number"
                                         placeholder="--------------------"
                                         className="text-black-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        min="1"     // Minimum value is 1
+                                        max="100"   // Maximum value is 100
+                                        step="1"    // Optional: Increment by whole numbers
                                     />
                                 )}
                             />
@@ -446,8 +457,9 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                             )}
                         </div>
 
+
                         <div>
-                            <label className="text-black-2 text-sm font-semibold">Task Status</label>
+                            <label className="text-black-2 text-sm font-semibold mt-2">Task Status</label>
                             <div className="border mt-1 border rounded py-1.5 px-2">
                                 <div className="flex space-x-1 sm:space-x-2">
                                     {statuses.map((status) => (
@@ -576,22 +588,27 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
 
     console.log(projectName, 'projectName')
 
-    useEffect(() => {
-        console.log('Current form errors:', errors);
-    }, [errors]);
+    // useEffect(() => {
+    //     console.log('Current form errors:', errors);
+    // }, [errors]);
 
-    useEffect(() => {
-        console.log('Form values changed:', watchedValues);
-    }, [watchedValues]);
+    // useEffect(() => {
+    //     console.log('Form values changed:', watchedValues);
+    // }, [watchedValues]);
 
     useEffect(() => {
         if (dateInputRef.current) {
             const today = new Date().toISOString().split('T')[0];
             dateInputRef.current.value = today;
         }
-        getAllContacts()
-
     }, []);
+
+    useEffect(() => {
+        const today = new Date().toISOString().split('T')[0];
+        setValue('Reference', generateUniqueReference());
+        setValue('Issue_Date', today);
+        getAllContacts()
+    }, [])
 
     useEffect(() => {
         if (prevProjectName.current !== projectName.value && projectName.value) {
@@ -652,35 +669,106 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
         }
     }
 
-    const getAllContacts = async (search = '') => {
+    const getAllContacts = async () => {
+        setSubcontractorsLoading(true);
+        let data = [];
+
         try {
-            // setValue('Project_Supervisor', null);
-            setSubcontractorsLoading(true)
             const data = await getApi("All_Contacts");
             const list = data?.map((d) => ({
                 label: d?.Contact_Name?.display_value,
                 value: d?.ID,
             }));
 
-            setSubcontractorsList(list)
-            setSubcontractorsLoading(false)
-
-            // setSuperVisorList(list)
-            // setSupervisorLoading(false)
-
-            // setSuperVisorList([])
-            // setSupervisorLoading(false)
-
+            setSubcontractorsList(list);
+            setSubcontractorsLoading(false);
+        } catch (error) {
+            console.error("Error fetching contacts:", error);
+            setSubcontractorsList([]);
+            setSubcontractorsLoading(false);
         }
-        catch (error) {
-            console.log(error)
-            setSubcontractorsLoading(false)
-            // setSupervisorLoading(false)
-            // setSuperVisorList([])
-            // setValue('Project_Supervisor', null);
+    };
 
+    const getSearchAllContacts = async (search) => {
+        setSubcontractorsLoading(true);
+        try {
+            if (search) {
+                const timeoutId = setTimeout(async () => {
+                    const data = await getApi("All_Contacts", `Contact_Name.contains("${search}")`);
+                    const list = data?.map((d) => ({
+                        label: d?.Contact_Name?.display_value,
+                        value: d?.ID,
+                    }));
+
+                    setSubcontractorsList(list?.length ? list : []);
+                }, 1500);
+
+                return () => {
+                    setSubcontractorsLoading(false);
+                    clearTimeout(timeoutId)
+                };
+            } else {
+                setSubcontractorsLoading(false);
+
+            }
+        } catch (error) {
+            console.error("Error fetching contacts:", error);
+            setSubcontractorsList([]);
+            setSubcontractorsLoading(false);
         }
     }
+
+    // const getAllContacts = async (search = '') => {
+    //     try {
+    //         // setValue('Project_Supervisor', null);
+    //         setSubcontractorsLoading(true)
+    //         let data = []
+
+    //         if (search) {
+    //             const timeoutId = setTimeout(async () => {
+    //                 const data = await getApi("All_Contacts", `Contact_Name.contains("${search}")`)
+    //                 const list = data?.map((d) => ({
+    //                     label: d?.Contact_Name?.display_value,
+    //                     value: d?.ID,
+    //                 }));
+
+    //                 setSubcontractorsList(list?.length ? list : [])
+    //                 setSubcontractorsLoading(false)
+    //             }, 100);
+
+    //             return () => {
+    //                 clearTimeout(timeoutId);
+    //                 setSubcontractorsLoading(false);
+    //             };
+    //         } else {
+    //             const data = await getApi("All_Contacts");
+    //             const list = data?.map((d) => ({
+    //                 label: d?.Contact_Name?.display_value,
+    //                 value: d?.ID,
+    //             }));
+
+    //             setSubcontractorsList(list)
+    //             setSubcontractorsLoading(false)
+    //         }
+
+
+
+    //         // setSuperVisorList(list)
+    //         // setSupervisorLoading(false)
+
+    //         // setSuperVisorList([])
+    //         // setSupervisorLoading(false)
+
+    //     }
+    //     catch (error) {
+    //         console.log(error)
+    //         setSubcontractorsLoading(false)
+    //         // setSupervisorLoading(false)
+    //         // setSuperVisorList([])
+    //         // setValue('Project_Supervisor', null);
+
+    //     }
+    // }
 
     const getAllProjectTasks = async () => {
         setValue('Project_Supervisor', null);
@@ -1035,7 +1123,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
                                         <p className="font-bold text-lg text-black-0">Worker  Details</p>
                                     </div>
                                     <hr className="bg-slate-200	h-px " />
-                                    <Workerdetails register={register} control={control} errors={errors} subcontractorList={subcontractorList} subcontractorsSearchLoading={subcontractorsSearchLoading} />
+                                    <Workerdetails register={register} control={control} errors={errors} subcontractorList={subcontractorList} subcontractorsSearchLoading={subcontractorsSearchLoading} getSearchAllContacts={getSearchAllContacts} />
                                 </div>
 
                                 <div className="project_description mt-8">
@@ -1088,7 +1176,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
                                             {fileInfo.map((file, index) => (
                                                 <div key={index} className='mx-5 p-4 sm:flex border border-gray-0 rounded-xl mb-3'>
                                                     <div className='w-1/2 flex items-center gap-4'>
-                                                    {/* <img src={file}></img> */}
+                                                        {/* <img src={file}></img> */}
                                                         {getFileIcon(file)}
                                                         <span>
                                                             <p className='sm:text-lg text-sm text-gray-2 font-bold'>{file.name}</p>
