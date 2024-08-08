@@ -98,48 +98,90 @@ const TaskDPReport = () => {
     const [subcontractorsList, setSubcontractorsList] = useState([]);
     const [projectList, setProjectList] = useState([]);
     const [formLoading, setFormLoading] = useState(true);
+    const [dprReports, setDprReports] = useState([])
+    const [tableLoader, setTableLoader] = useState(true);
+    const [openTask, setOpenTask] = useState(null)
 
     useEffect(() => {
         getDPRDetail()
+        getDprTableData()
     }, [])
 
     const handleTaskModelAddOpen = () => {
         setTaskModalOpen(!isTaskModalOpen)
     }
 
-    const handleTaskViewModelOpen = () => {
+    const handleTaskViewModelOpen = (task) => {
+        console.log(task, 'task')
+        setOpenTask(task)
         setTaskView(!showTaskView)
     }
 
     const getDPRDetail = async (active = true) => {
         try {
             const projects = await getApi("All_Projects", `Active==${active}`)
-            let accountCriteria = ``
-            const allContacts = await getApi("All_Contacts", accountCriteria);
-
-            const subcontractorList = allContacts?.map((d) => ({
-                label: d?.Contact_Name?.display_value,
-                value: d?.ID,
-            }));
-
             const projectList = projects?.map((item) => ({
                 label: item?.Job_Name + " - " + item?.Project_ID,
                 value: item?.ID,
             }));
-
-            setSubcontractorsList(
-                subcontractorList?.length > 0 ? subcontractorList : []
-            );
-
-            setProjectList(projectList?.length > 0 ? projectList : [])
+            setProjectList(projectList?.length ? projectList : [])
         }
         catch (error) {
             console.log(error, 'error')
         }
     }
 
-    console.log(subcontractorsList, 'subcontractorsList')
+    const getFileExtension = (url) => {
+        const parts = url.split('.');
+        return parts.length > 1 ? parts.pop().split('?')[0].toLowerCase() : '';
+    };
 
+
+    const getDprTableData = async () => {
+        try {
+            const dprReports = await getApi("All_Daily_Progress");
+
+            setDprReports(dprReports?.length ? dprReports.map(project => {
+                const pdfs = [];
+                const videos = [];
+                const images = [];
+
+                if (project.Progress_Attachements) {
+                    project.Progress_Attachements.forEach(file1 => {
+                        const fileUrl = file1.display_value.split('##$$')[0];
+                        const ext = getFileExtension(fileUrl);
+                        console.log(fileUrl, 'file.filefile');
+                        console.log(ext, 'file.extension');
+
+                        if (ext === 'pdf') {
+                            pdfs.push(fileUrl);
+                        } else if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) {
+                            videos.push(fileUrl);
+                        } else if (['png', 'jpg', 'jpeg'].includes(ext)) {
+                            images.push(fileUrl);
+                        }
+                    });
+                }
+
+                return {
+                    ...project,
+                    Project: project?.Project_Name?.display_value,
+                    Supervisor: project?.Project_Supervisor?.display_value,
+                    pdfs,
+                    images,
+                    videos
+                };
+            }) : []);
+
+            setTableLoader(false);
+        } catch (error) {
+            console.log(error, 'error');
+            setTableLoader(false);
+        }
+    };
+
+
+    console.log(dprReports, 'dprReports')
 
     return (
         <>
@@ -148,7 +190,7 @@ const TaskDPReport = () => {
 
                     showTaskView &&
                     <TaskModalDPR isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} >
-                        <TaskViewDPR isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} />
+                        <TaskViewDPR isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} openTask={openTask} />
                     </TaskModalDPR>
                 }
 
@@ -161,7 +203,6 @@ const TaskDPReport = () => {
                             formLoading={formLoading}
                         />
                     </TaskModalDPR>
-
                 }
 
                 <div className="dpr-tasks">
@@ -173,7 +214,8 @@ const TaskDPReport = () => {
                         </button>
                     </div>
 
-                    <TableDPR tasks={tasks} isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} />
+                    <TableDPR tableLoader={tableLoader} tasks={dprReports} isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} />
+
                 </div>
 
             </div>

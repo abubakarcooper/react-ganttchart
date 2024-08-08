@@ -11,8 +11,8 @@ import { useState, useEffect } from "react";
 import IconExclude from '../../../../../images/dpr/exclude.svg'
 import { ExcelExport } from "@syncfusion/ej2-react-gantt";
 import { Popover, Button } from "flowbite-react";
-
-
+import moment from "moment";
+import Spinner from "../../../../Spinner";
 const PopUpOverFilter = ({ children, className, title, setColumns, allColumns }) => {
     const showHideTableColumns = (event, index) => {
         const columnId = event.target.name;
@@ -55,12 +55,12 @@ const PopUpOverFilter = ({ children, className, title, setColumns, allColumns })
     )
 }
 
-const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
+const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen, tableLoader }) => {
 
     const totalPages = 100;
     const [projectTasks, setProjectTasks] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, sePageSize] = useState(4);
+    const [pageSize, sePageSize] = useState(10);
     const [tableActiveTab, setTableActiveTab] = useState('pending')
     const [dateType, setDateType] = useState('weekly')
     const [columns, setColumns] = useState(dprTableColumns)
@@ -91,6 +91,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
         return Math.ceil(totalItems / pageSize);
     };
 
+    console.log(tasks, 'tasks')
     return (
 
         <div className="bg-white-2 px-2 py-5 border rounded mt-4">
@@ -141,76 +142,55 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                 </div>
                 {/* //// Table /// */}
                 <div className="border rounded-xl mt-8">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-xl ">
-                        {/* <thead className="text-sm text-gray-700 capitalise bg-gray-5 rounded-xl">
+                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-xl">
+                        <thead className="text-sm text-gray-700 capitalize bg-gray-5 rounded-xl">
                             <tr className="rounded-xl">
-                                {columns.map((column, index) => (
-                                    index == 0 ?
+                                {columns.map((column, index) =>
+                                    column.isActive ? (
                                         <th
                                             key={column.id}
                                             scope="col"
-                                            className={`px-6 font-semibold text-base py-3`}
-                                        >
-
-                                            <PopUpOverFilter className="ml-10 mt-2" title='Show/Hide Columns' allColumns={columns} setColumns={setColumns}>
-                                                <img src={IconExclude} alt="No-Image" className="cursor-pointer" />
-                                                <span> {column.label}</span>
-                                            </PopUpOverFilter>
-
-
-                                        </th> :
-                                        <th
-                                            key={column.id}
-                                            scope="col"
-                                            className={`px-6 font-semibold text-base py-3`}
-                                        >
-                                            {column.label}
-                                        </th>
-                                ))}
-                            </tr>
-                        </thead> */}
-
-                        <thead className="text-sm text-gray-700 capitalise bg-gray-5 rounded-xl">
-                            <tr className="rounded-xl">
-                                {columns.map((column, index) => (
-                                    column.isActive && (
-                                        <th
-                                            key={column.id}
-                                            scope="col"
-                                            className={`px-6 font-semibold text-base py-3`}
+                                            className="px-6 font-semibold text-base py-3"
                                         >
                                             {index === 0 ? (
-                                                <PopUpOverFilter className="ml-10 mt-2" title='Show/Hide Columns' allColumns={columns} setColumns={setColumns}>
+                                                <PopUpOverFilter className="ml-10 mt-2" title="Show/Hide Columns" allColumns={columns} setColumns={setColumns}>
                                                     <img src={IconExclude} alt="No-Image" className="cursor-pointer" />
                                                     <span> {column.label}</span>
                                                 </PopUpOverFilter>
-                                            ) : column.label}
+                                            ) : (
+                                                column.label
+                                            )}
                                         </th>
-
-
-                                    )
-                                ))}
-                                <th
-                                    scope="col"
-                                    className={`px-6 font-semibold text-base py-3`}
-                                >
+                                    ) : null
+                                )}
+                                <th scope="col" className="px-6 font-semibold text-base py-3">
                                     Action
                                 </th>
-
                             </tr>
                         </thead>
                         <tbody>
-                            {projectTasks.length > 0 ? (
+                            {tableLoader ? (
+                                <tr>
+                                    <td colSpan={6} className="text-center py-6" style={{ verticalAlign: 'middle' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
+                                            <Spinner />
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : projectTasks.length > 0 ? (
                                 projectTasks.map((task, index) => (
-                                    <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 text-black-2 text-sm">
+                                    <tr key={index} className={`odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 ${(projectTasks.length - 1) != index & 'border-b '} dark:border-gray-700 text-black-2 text-sm`}>
                                         {columns.map((column) =>
-                                            column.isActive && (
+                                            column.isActive ? (
                                                 <td key={column.id} className={`px-6 py-4 ${column.width || 'w-auto'}`}>
-                                                    {task[column.id] || '-'}
+                                                    {column.id === 'Issue_Date'
+                                                        ? task[column.id]
+                                                            ? moment(task[column.id], 'MM-DD-YYYY').format('MM/DD/YYYY')
+                                                            : '-'
+                                                        : task[column.id] || '-'}
                                                 </td>
-                                            )
+                                            ) : null
                                         )}
-
                                         <td className="px-6 py-4 w-[10%]">
                                             <FaEye className="text-black-2 text-xl cursor-pointer" onClick={() => handleTaskModelOpen(task)} />
                                         </td>
@@ -219,12 +199,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                             ) : (
                                 <tr>
                                     <td colSpan={columns.filter(col => col.isActive).length} className="text-center py-6">
-                                        <img
-                                            src={ImgNoData}
-                                            alt="No data available"
-                                            className="mx-auto"
-                                            style={{ width: '300px' }}
-                                        />
+                                        <img src={ImgNoData} alt="No data available" className="mx-auto" style={{ width: '300px' }} />
                                     </td>
                                 </tr>
                             )}
@@ -232,13 +207,16 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen }) => {
                     </table>
                     {
                         <div className="mt-4">
-                            <Pagination currentPage={currentPage} totalPages={getTotalPages(tasks?.length, pageSize)} onPageChange={handlePageChange} />
+                            {
+                                tasks?.length > pageSize &&
+                                <Pagination currentPage={currentPage} totalPages={getTotalPages(tasks?.length, pageSize)} onPageChange={handlePageChange} />
+                            }
                         </div>
                     }
 
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
