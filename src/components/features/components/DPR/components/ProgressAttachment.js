@@ -5,7 +5,7 @@ import Img2 from '../../../../../images/dpr/progressImg (2).svg'
 import Img3 from '../../../../../images/dpr/progressImg (3).svg'
 import Img4 from '../../../../../images/dpr/progressImg (4).svg'
 const ProgressAttachment = ({ openTask }) => {
-
+console.log(openTask.images,'openTask.images openTask.images')
     return (
         <div className='w-97% xl:w-1200px m-auto my-7 flex flex-col gap-7'>
             <Heading heading='Progress Attachments' />

@@ -465,7 +465,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                                                 value={status.label}
                                                 checked={field.status === status.label}
                                                 onChange={() => handleStatusChange(index, status.label)}
-                                                className="opacity-0"
+                                                className="opacity-0 ml-[-17px]"
                                             />
                                             {status.label}
                                         </label>
@@ -523,7 +523,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
             >
                 <FaPlus className="mr-2" /> Add More Tasks
             </button>
-        </div >
+        </div>
     );
 };
 
@@ -1082,6 +1082,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading }) =>
                                             {fileInfo.map((file, index) => (
                                                 <div key={index} className='mx-5 p-4 sm:flex border border-gray-0 rounded-xl mb-3'>
                                                     <div className='w-1/2 flex items-center gap-4'>
+                                                    {/* <img src={file}></img> */}
                                                         {getFileIcon(file)}
                                                         <span>
                                                             <p className='sm:text-lg text-sm text-gray-2 font-bold'>{file.name}</p>

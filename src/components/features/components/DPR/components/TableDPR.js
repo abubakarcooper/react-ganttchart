@@ -141,7 +141,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen, tableLoader }) 
                     </div>
                 </div>
                 {/* //// Table /// */}
-                <div className="border rounded-xl mt-8">
+                <div className="border rounded-xl mt-8 overflow-hidden">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-xl">
                         <thead className="text-sm text-gray-700 capitalize bg-gray-5 rounded-xl">
                             <tr className="rounded-xl">
@@ -206,7 +206,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen, tableLoader }) 
                         </tbody>
                     </table>
                     {
-                        <div className="mt-4">
+                        <div>
                             {
                                 tasks?.length > pageSize &&
                                 <Pagination currentPage={currentPage} totalPages={getTotalPages(tasks?.length, pageSize)} onPageChange={handlePageChange} />
@@ -216,7 +216,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen, tableLoader }) 
 
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
