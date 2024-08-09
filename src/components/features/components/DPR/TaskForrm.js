@@ -461,11 +461,11 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                         <div>
                             <label className="text-black-2 text-sm font-semibold mt-2">Task Status</label>
                             <div className="border mt-1 border rounded py-1.5 px-2">
-                                <div className="flex flex-wrap gap-1">
+                                <div className="flex flex-wrap gap-2">
                                     {statuses.map((status) => (
                                         <label
                                             key={status.label}
-                                            className={`px-7 sm:px-3 py-1 text-sm font-medium rounded-full cursor-pointer 
+                                            className={`w-[140px] sm:w-[23.5%] text-center px-3 py-2 text-sm font-medium rounded-full cursor-pointer 
                                                 ${field.status === status.label
                                                     ? "bg-primary-0 text-white-1"
                                                     : `${status.color} ${status.textColor}`
@@ -531,7 +531,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
             <button
                 type="button"
                 onClick={() => append({})}
-                className="rounded-[5px] text-[16px] border mt-2 border-[#143965] bg-black py-[20px] px-[16px] h-[32px] w-full text-[#143965] font-bold flex items-center justify-center"
+                className="rounded-[5px] text-base border mt-2 border-[#143965] bg-black py-[20px] px-[16px] h-[32px] w-full text-[#143965] font-bold flex items-center justify-center"
             >
                 <FaPlus className="mr-2" /> Add More Tasks
             </button>
@@ -1160,7 +1160,7 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
                                                 <input {...getInputProps({ id: 'dropzone-file' })} />
                                                 <div className="flex flex-col items-center justify-center py-2">
                                                     <img src={Upload} alt="Upload" />
-                                                    <p className="mb-2 text-gray-500 dark:text-gray-400 text-lg">
+                                                    <p className="mb-2 text-gray-500 dark:text-gray-400 text-lg text-center">
                                                         <span className="text-sm sm:text-lg font-semibold text-primary-0">
                                                             Click to upload
                                                         </span>{" "}

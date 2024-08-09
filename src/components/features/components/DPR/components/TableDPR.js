@@ -13,6 +13,7 @@ import { ExcelExport } from "@syncfusion/ej2-react-gantt";
 import { Popover, Button } from "flowbite-react";
 import moment from "moment";
 import Spinner from "../../../../Spinner";
+import { CiEdit } from "react-icons/ci";
 const PopUpOverFilter = ({ children, className, title, setColumns, allColumns }) => {
     const showHideTableColumns = (event, index) => {
         const columnId = event.target.name;
@@ -25,7 +26,7 @@ const PopUpOverFilter = ({ children, className, title, setColumns, allColumns })
 
 
     return (
-        <Popover 
+        <Popover
             aria-labelledby="default-popover"
             content={
                 <div className="w-52 sm:w-72 text-gray-500 dark:text-gray-400 bg-white-2 shadow-inner">
@@ -134,7 +135,7 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen, tableLoader }) 
                         </PopUpOverFilter>
 
                         <div className="flex items-center sm:gap-2 border border-black-0 rounded py-1.5 px-1 sm:px-2.5">
-                            <BiSort className="w-3 sm:w-6 h-3 sm:h-5 "/><span className="text-xs sm:text-base"> Sort by</span> <TiArrowSortedDown className="w-3 sm:w-6 h-3 sm:h-5 "/>
+                            <BiSort className="w-3 sm:w-6 h-3 sm:h-5 " /><span className="text-xs sm:text-base"> Sort by</span> <TiArrowSortedDown className="w-3 sm:w-6 h-3 sm:h-5 " />
                         </div>
 
                     </div>
@@ -191,7 +192,10 @@ const TableDPR = ({ tasks, handleTaskModelOpen, isTaskModalOpen, tableLoader }) 
                                             ) : null
                                         )}
                                         <td className="px-6 py-4 w-[10%]">
-                                            <FaEye className="text-black-2 text-xl cursor-pointer" onClick={() => handleTaskModelOpen(task)} />
+                                            <div className="flex items-center gap-3">
+                                                <CiEdit className="text-xl cursor-pointer" />
+                                                <FaEye className="text-black-2 text-xl cursor-pointer" onClick={() => handleTaskModelOpen(task)} />
+                                            </div>
                                         </td>
                                     </tr>
                                 ))

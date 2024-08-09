@@ -15,8 +15,8 @@ const TaskModalDPR = ({ isTaskModalOpen, handleTaskModelOpen, children }) => {
                 onClose={handleTaskModelOpen}
             >
                 <div className="rounded-lg hello" style={{ backgroundColor: "white", overflowY: 'scroll' }}>
-                    <Modal.Header className="border-none pb-0" />
-                    <ModalBody className="p-5 pt-2">
+                    <Modal.Header className="py-0 border-none" />
+                    <ModalBody className="p-5 pt-0">
                         <div>
                             {children}
                         </div>
