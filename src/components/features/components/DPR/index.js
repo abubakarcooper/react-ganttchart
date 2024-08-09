@@ -212,12 +212,14 @@ const TaskDPReport = () => {
                 }
 
                 <div className="dpr-tasks">
-                    <div className="flex justify-between">
+                    <div className="sm:flex justify-between">
                         <h1 className="text-2xl font-bold text-primary-0">Daily Progress Reports</h1>
+                        <div className="flex justify-end mt-2 sm:mt-0">
                         <button onClick={handleTaskModelAddOpen}
                             className="py-2 text-sm font-semibold text-white-2 bg-primary-0 rounded-lg flex items-center justify-center w-[165px]">
                             <FaPlus className="mr-2" /> Add Report
                         </button>
+                        </div>
                     </div>
 
                     <TableDPR tableLoader={tableLoader} tasks={dprReports} isTaskModalOpen={showTaskView} handleTaskModelOpen={handleTaskViewModelOpen} />

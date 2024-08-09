@@ -428,7 +428,7 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                             </p>
                         )} */}
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mt-2">
+                    <div className="grid grid-cols-1  lg:grid-cols-2 gap-4 mt-2">
                         <div>
                             <label className="text-black-2 text-sm font-semibold">Completion Percentage</label>
                             <Controller
@@ -461,11 +461,11 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                         <div>
                             <label className="text-black-2 text-sm font-semibold mt-2">Task Status</label>
                             <div className="border mt-1 border rounded py-1.5 px-2">
-                                <div className="flex space-x-1 sm:space-x-2">
+                                <div className="flex flex-wrap gap-1">
                                     {statuses.map((status) => (
                                         <label
                                             key={status.label}
-                                            className={`px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-full cursor-pointer 
+                                            className={`px-7 sm:px-3 py-1 text-sm font-medium rounded-full cursor-pointer 
                                                 ${field.status === status.label
                                                     ? "bg-primary-0 text-white-1"
                                                     : `${status.color} ${status.textColor}`
@@ -1045,16 +1045,17 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
 
     return (
         <>
-            <div className="mx-5 mb-2 bg-gray-5 rounded border">
-                <div className="flex justify-between  p-2 items-center ">
-                    <div>
-                        <img src={Logo} />
+            <div className="mx-0 sm:mx-5 mb-2 bg-gray-5 rounded border">
+                <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-0 items-center py-2 px-0 sm:px-2">
+                    <div className=" sm:w-[27%]">
+                        <img src={Logo} className="w-full"/>
                     </div>
-                    <h2 className="text-3xl text-primary-0  px-3 py-2">
+                    <h2 className="text-xl md:text-2xl lg:text-3xl text-primary-0  px-0 sm:px-3 py-2">
                         Daily Progress Form
                     </h2>
-                    <div className="w-80">
-                        <label className="block text-sm font-semibold mt-6 text-black-2 text-black-2">Date</label>
+                    {/* <div className="w-[70%] sm:w-56 lg:w-80  border border-red-300"> */}
+                    <div className="w-[180px] sm:w-[30%]">
+                        <label className="block text-sm font-semibold text-black-2">Date</label>
                         <input
                             type="date"
                             ref={dateInputRef}

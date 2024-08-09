@@ -92,7 +92,7 @@ const TaskViewModal = ({ openTask }) => {
 
     return (
         <>
-            <div className='w-1200px m-auto'>
+            <div>
                 <ProjectDetail openTask={openTask} />
                 <ProjectDescription openTask={openTask} />
                 <WorkerDetail openTask={openTask} />

@@ -17,7 +17,7 @@ const Documents = ({ openTask }) => {
                         {openTask.pdfs.map((file, index) => (
                             <a key={index} className='flex items-center gap-3 border border-BorderColor rounded-xl p-4' href={file} target='_blank'>
                                 <img src={DoumentLogo} alt='Document logo' className='w-16 h-12' />
-                                <div className='text-base font-medium'>
+                                <div className='text-sm sm:text-base font-medium'>
                                     <h1>{getFileNameFromUrl(file)}</h1>
                                 </div>
                             </a>

@@ -32,14 +32,13 @@ const TaskDetail = ({ openTask }) => {
                                     Task Name
                                 </span>
                             </h1>
-                            <h1 className='text-primary-0 text-2xl font-medium mt-2 flex justify-between'>
-                                <span>{task?.task || 'N/A'}</span>
-                                <p className='bg-orange-0 text-white-0 text-[9px] flex items-center justify-center px-3 rounded-xl font-medium text-xl'>{task.taskStatus}</p>
-                            </h1>
-
-
-                        </div>
-                        <div className='flex gap-4 '>
+                            <div className='text-primary-0 font-medium mt-2 sm:flex justify-between'>
+                            <h1 className='text-2xl'>{task?.task || 'N/A'}</h1>
+                            <div className='flex justify-end'>
+                            <p className='bg-orange-0 text-white-0 px-3 rounded-xl text-xl inline-block'>{task.taskStatus}</p>
+                            </div>
+                            </div>
+                         </div>
                             {/* <div className='shadow py-4 px-3 rounded-xl bg-white-2 mt-4 w-[50%]'>
                                 <h1 className='text-lightBlack text-base font-semibold mb-3'>Work Completed</h1>
                                 <ul className='list-disc pl-5 flex flex-col gap-2'>
@@ -53,15 +52,16 @@ const TaskDetail = ({ openTask }) => {
                                     }
                                 </ul>
                             </div> */}
+                        <div className='flex flex-col sm:flex-row items-center sm:items-stretch gap-4 pt-4'>
 
-                            <div className='shadow rounded-lg px-3 py-6 flex flex-col gap-4 mt-4 w-[50%]'>
+                            <div className='shadow rounded-lg px-3 py-6 flex flex-col gap-4 w-9/12 sm:w-1/2'>
                                 <h1 className='text-base font-semibold text-lightBlack'>Work Completed </h1>
                                 <p className='font-semibold text-xs text-primeryColor'>
                                     Progress Update: We’ve completed [percentage]% of the work. Thank you for your patience!
                                 </p>
                             </div>
 
-                            <div className='shadow rounded-lg px-3 py-6 flex flex-col gap-4 mt-4 w-[50%]'>
+                            <div className='shadow rounded-lg px-3 py-6 flex flex-col gap-4 w-9/12 sm:w-1/2'>
                                 <h1 className='text-base font-semibold text-lightBlack'>Remarks / Comments</h1>
                                 <p className='font-semibold text-xs text-primeryColor'>
                                     {
