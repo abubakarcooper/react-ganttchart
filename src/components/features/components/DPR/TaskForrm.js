@@ -460,12 +460,12 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
 
                         <div>
                             <label className="text-black-2 text-sm font-semibold mt-2">Task Status</label>
-                            <div className="border mt-1 border rounded py-1.5 px-2">
+                            <div className="border mt-1 rounded py-1 px-2">
                                 <div className="flex flex-wrap gap-2">
                                     {statuses.map((status) => (
                                         <label
                                             key={status.label}
-                                            className={`w-[140px] sm:w-[23.5%] text-center px-3 py-2 text-sm font-medium rounded-full cursor-pointer 
+                                            className={`w-[140px] sm:w-[23.5%] text-center px-3 py-1.5 text-sm font-medium rounded-full cursor-pointer 
                                                 ${field.status === status.label
                                                     ? "bg-primary-0 text-white-1"
                                                     : `${status.color} ${status.textColor}`
