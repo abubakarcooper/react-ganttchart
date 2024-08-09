@@ -356,6 +356,68 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                 <div key={field.id} className="border p-4 rounded-md mb-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                         <div>
+                            <label className="block text-xs md:text-sm font-semibold mb-1 text-black-2">Deliverable Class</label>
+                            <Controller
+                                name={`tasks[${index}].deliverableClass`}
+                                control={control}
+                                rules={{ required: "Deliverable Class is required" }}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        className="basic-single rounded-md"
+                                        isLoading={taskSearchLoading}
+                                        isClearable={false}
+                                        isSearchable={true}
+                                        isMulti={false}
+                                        placeholder="--------------------"
+                                        components={{ IndicatorSeparator: () => null }}
+                                        styles={{
+                                            input: (base) => ({ ...base, "input:focus": { boxShadow: "none" } }),
+                                            control: (base) => ({ ...base, background: "#ffff", transition: "none", fontSize: "12px" })
+                                        }}
+                                        options={[]}
+                                    />
+                                )}
+                            />
+                            {errors.tasks?.[index]?.deliverableClass && (
+                                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                                    {errors.tasks[index].deliverableClass.message}
+                                </p>
+                            )}
+                        </div>
+                        <div>
+                            <label className="block text-xs md:text-sm font-semibold mb-1 text-black-2">Deliverable</label>
+                            <Controller
+                                name={`tasks[${index}].deliverable`}
+                                control={control}
+                                rules={{ required: "Deliverable is required" }}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        className="basic-single rounded-md"
+                                        isLoading={taskSearchLoading}
+                                        isClearable={false}
+                                        isSearchable={true}
+                                        isMulti={false}
+                                        placeholder="--------------------"
+                                        components={{ IndicatorSeparator: () => null }}
+                                        styles={{
+                                            input: (base) => ({ ...base, "input:focus": { boxShadow: "none" } }),
+                                            control: (base) => ({ ...base, background: "#ffff", transition: "none", fontSize: "12px" })
+                                        }}
+                                        options={[]}
+                                    />
+                                )}
+                            />
+                            {errors.tasks?.[index]?.deliverable && (
+                                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                                    {errors.tasks[index].deliverable.message}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mt-2">
+                        <div>
                             <label className="block text-xs md:text-sm font-semibold mb-1 text-black-2">Task Name</label>
                             <Controller
                                 name={`tasks[${index}].taskName`}
@@ -400,14 +462,14 @@ const Completedtaskdetails = ({ control, errors, setValue, watch, tasksList, tas
                                     />
                                 )}
                             />
-                            {errors.tasks?.[index]?.equipmentUsed && (
+                            {/* {errors.tasks?.[index]?.equipmentUsed && (
                                 <p className="mt-1 text-xs text-red-600 dark:text-red-400">
                                     {errors.tasks[index].equipmentUsed.message}
                                 </p>
-                            )}
+                            )} */}
                         </div>
                     </div>
-                    <div>
+                    <div className="mt-2">
                         <label className="text-sm font-semibold text-black-2">Any Report/Incident</label>
                         <Controller
                             name={`tasks[${index}].reportIncident`}
@@ -558,8 +620,6 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
     const [fileInfo, setFileInfo] = useState([]);
     const [loading, setLoading] = useState(false);
 
-
-
     const { control, handleSubmit, register, formState: { errors, tasks }, setValue, watch, reset } = useForm({
         defaultValues: {
             workers: [{ workerName: '', designation: '' }], // Initial values
@@ -569,7 +629,9 @@ const TaskFormDPR = ({ setIsEditOpen, isEditOpen, projectList, formLoading, getD
                 equipmentUsed: '',
                 progressDetail: '',
                 reportIncident: '',
-                taskName: ''
+                taskName: '',
+                deliverableClass: '',
+                deliverable: ''
 
             }], // Initial values
 
